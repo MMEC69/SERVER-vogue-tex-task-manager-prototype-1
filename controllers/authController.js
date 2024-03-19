@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Project = require("../models/project"); 
 const { hashPassword, comparePassword } = require("../helpers/auth");
 const jwt = require("jsonwebtoken");
 
@@ -23,7 +24,7 @@ const registerUser = async (req, res) => {
             });
         }
         //Check email
-        const exists = await User.findOne({email})
+        const exists = await User.findOne({email});
         if(exists){
             return res.json({
                 error: "Email is taken already!"
@@ -93,9 +94,103 @@ const getProfile = (req, res) => {
     }
 }
 
+const createNewProject = async (req, res) => {
+    try {
+        const {
+            projectOwner,
+            projectName, 
+            projectDescription, 
+            departmentName, 
+            startDate, 
+            dueDate, 
+            assignedTo, 
+            projectState
+        } = req.body;
+
+        //Check if project owner is given
+        if(!projectOwner){
+            return res.json({
+                error: "Project Owner is required!"
+            });
+        }
+
+        //Check if project name is given
+        if(!projectName){
+            return res.json({
+                error: "Project Name is required!"
+            });
+        }
+
+        //check if project name is unique
+        const exists = await Project.findOne({projectName});
+        if(exists){
+            return res.json({
+                error: "Project name is alredy taken, provide a diffrent name!"
+            });
+        }
+
+        //Check if project description is given
+        if(!projectDescription){
+            return res.json({
+                error: "Project description can't be empty!"
+            });
+        }
+
+        //Check if department name is given
+        if(!departmentName){
+            return res.json({
+                error: "Department name is required!"
+            });
+        }
+
+        //Check if startDate is given
+        if(!startDate){
+            return res.json({
+                error: "start date is required!"
+            });
+        }
+
+        //Check if dueDate is given
+        if(!dueDate){
+            return res.json({
+                error: "due date is required!"
+            });
+        }
+
+        //Check if users are assigned
+        if(!assignedTo){
+            return res.json({
+                error: "Users need to be assigned!"
+            });
+        }
+
+        //Check if project state is given
+        if(!projectState){
+            return res.json({
+                error: "State is required!"
+            });
+        }
+
+        const project = await Project.create({
+            projectOwner,
+            projectName,
+            projectDescription,
+            departmentName, 
+            startDate, 
+            dueDate, 
+            assignedTo, 
+            projectState
+        });
+        return res.json(project);
+    } catch (error) {
+        console.log("Error: " +error);
+    }
+}
+
 module.exports = {
     test,
     registerUser,
     loginUser,
-    getProfile
+    getProfile,
+    createNewProject
 }

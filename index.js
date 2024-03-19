@@ -22,6 +22,7 @@ app.use("/", require("./routes/authRoutes"));
 app.use("/register", require("./routes/authRoutes"));
 app.use("/login", require("./routes/authRoutes"));
 app.use("/profile", require("./routes/authRoutes"));
+app.use("/createNewProject", require("./routes/authRoutes"));
 
 
 app.listen(PORT, () => {
