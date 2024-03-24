@@ -32,6 +32,7 @@ const registerUser = async (req, res) => {
         }
 
         const hashedPassword = await hashPassword(password)
+        
         //create user in db
         const user = await User.create({
             fullName, email, password: hashedPassword
@@ -49,6 +50,7 @@ const loginUser = async (req, res) => {
 
         //Check if user exists
         const user = await User.findOne({email});
+        
         if(!user){
             return res.json({
                 error: "No user found"
@@ -187,10 +189,42 @@ const createNewProject = async (req, res) => {
     }
 }
 
+const createNewTask = async (req, res) => {
+    try {
+        const {currentProject, tasks} = req.body;
+        const {currentProjectOwner, currentProjectName} = currentProject
+        const projectName = currentProjectName;
+        const newTasks = tasks
+        
+        const project = await Project.findOne({projectName});
+        if(!project){
+            console.log(currentProjectName)
+            // console.log(tasks)
+            return res.json({
+                error: "Such project doesn't exist!"
+            })
+        }
+        if(currentProjectOwner != project.projectOwner){
+            return res.json({
+                error: "You are not allowed to add tasks!"
+            });
+        }
+        console.log(project);
+
+        const addedTasks = await project.updateOne({$push: {tasks: {$each: tasks}}});
+        console.log(addedTasks);
+
+        return res.json(addedTasks);
+    } catch (error) {
+        console.log("Error: " +error);
+    }
+}
+
 module.exports = {
     test,
     registerUser,
     loginUser,
     getProfile,
-    createNewProject
+    createNewProject,
+    createNewTask
 }

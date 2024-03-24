@@ -23,7 +23,7 @@ app.use("/register", require("./routes/authRoutes"));
 app.use("/login", require("./routes/authRoutes"));
 app.use("/profile", require("./routes/authRoutes"));
 app.use("/createNewProject", require("./routes/authRoutes"));
-
+app.use("/createNewTask", require("./routes/authRoutes"));
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
