@@ -220,11 +220,24 @@ const createNewTask = async (req, res) => {
     }
 }
 
+const getProjects = async (req, res) => {
+    try {
+        const projectSet = await Project.find();
+        if(!projectSet){
+            res.json({error: "There are no projects!"});
+        }
+        return res.json(projectSet);
+    } catch (error) {
+        console.log("Error: " +error);
+    }
+}
+
 module.exports = {
     test,
     registerUser,
     loginUser,
     getProfile,
     createNewProject,
-    createNewTask
+    createNewTask,
+    getProjects
 }

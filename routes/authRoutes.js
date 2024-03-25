@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const cors = require("cors");
-const { test, registerUser, loginUser, getProfile, createNewProject, createNewTask } = require("../controllers/authController");
+const { test, registerUser, loginUser, getProfile, createNewProject, createNewTask, getProjects } = require("../controllers/authController");
 
 //middleware
 router.use(
@@ -17,5 +17,6 @@ router.post("/login", loginUser);
 router.get("/profile", getProfile);
 router.post("/createNewProject", createNewProject);
 router.put("/createNewTask", createNewTask);
+router.get("/getProjects", getProjects);
 
 module.exports = router;
