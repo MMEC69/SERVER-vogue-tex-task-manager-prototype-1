@@ -11,7 +11,7 @@ const projectSchema = new Schema({
     departmentName: String,
     startDate: String,
     dueDate: String,
-    assignedTo: String,
+    assignedTo: Array,
     projectState: String,
     tasks: Array,
     comments: Array

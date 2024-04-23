@@ -232,6 +232,121 @@ const getProjects = async (req, res) => {
     }
 }
 
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        if(!users){
+            res.json({error: "There are no users"});
+        }
+        filteredUsers = users.map((user) => {
+            filteredUser = {fullName: user.fullName, email: user.email}
+            return filteredUser;
+        });
+
+        return res.json(filteredUsers);
+    } catch (error) {
+        console.log("Error: " +error);
+    }
+}
+
+const modifyProject = async (req, res) => {
+    try {
+        const {selectedProject} = req.params;
+        const{
+            projectOwner,
+            projectName,
+            projectDescription,
+            departmentName,
+            startDate,
+            dueDate,
+            assignedTo,
+            projectState,
+            tasks,
+            comments
+        } = req.body;
+
+        //Check if project owner is given
+        if(!projectOwner){
+            return res.json({
+                error: "Project Owner is required!"
+            });
+        }
+
+        //Check if project name is given
+        if(!projectName){
+            return res.json({
+                error: "Project Name is required!"
+            });
+        }
+
+        //check if project name is unique
+        const exists = await Project.findOne({projectName: projectName});
+        if(selectedProject != projectName){
+            if(exists){
+                return res.json({
+                    error: "Project name is alredy taken, provide a diffrent name!"
+                });
+            }
+        }else{
+            console.log("Okay!")
+        }
+
+        //Check if project description is given
+        if(!projectDescription){
+            return res.json({
+                error: "Project description can't be empty!"
+            });
+        }
+
+        //Check if department name is given
+        if(!departmentName){
+            return res.json({
+                error: "Department name is required!"
+            });
+        }
+
+        //Check if startDate is given
+        if(!startDate){
+            return res.json({
+                error: "start date is required!"
+            });
+        }
+
+        //Check if dueDate is given
+        if(!dueDate){
+            return res.json({
+                error: "due date is required!"
+            });
+        }
+
+        //Check if users are assigned
+        if(!assignedTo){
+            return res.json({
+                error: "Users need to be assigned!"
+            });
+        }
+
+        //Check if the project sate is given 
+        if(!projectState){
+            return res.json({
+                error: "State is required!"
+            });
+        }
+
+        const project = await Project.findOneAndUpdate(
+            {projectName: "2"},
+            req.body,
+            {new: true}
+        );
+
+        res.status(200).json({
+            project
+        });
+    } catch (err) {
+        res.status(500).json({error: "Unknown Error!"});
+    }
+}
+
 module.exports = {
     test,
     registerUser,
@@ -239,5 +354,7 @@ module.exports = {
     getProfile,
     createNewProject,
     createNewTask,
-    getProjects
+    getProjects,
+    getUsers,
+    modifyProject
 }

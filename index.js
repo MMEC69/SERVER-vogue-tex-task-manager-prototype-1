@@ -25,6 +25,8 @@ app.use("/profile", require("./routes/authRoutes"));
 app.use("/createNewProject", require("./routes/authRoutes"));
 app.use("/createNewTask", require("./routes/authRoutes"));
 app.use("/getProjects", require("./routes/authRoutes"));
+app.use("/getUsers", require("./routes/authRoutes"));
+app.use("/modifyTheProject/:currentProjectName", require("./routes/authRoutes"));
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
