@@ -252,6 +252,7 @@ const getUsers = async (req, res) => {
 const modifyProject = async (req, res) => {
     try {
         const {selectedProject} = req.params;
+        console.log(selectedProject);
         const{
             projectOwner,
             projectName,
@@ -280,7 +281,7 @@ const modifyProject = async (req, res) => {
         }
 
         //check if project name is unique
-        const exists = await Project.findOne({projectName: projectName});
+        let exists = await Project.findOne({projectName: projectName});
         if(selectedProject != projectName){
             if(exists){
                 return res.json({
@@ -288,7 +289,7 @@ const modifyProject = async (req, res) => {
                 });
             }
         }else{
-            console.log("Okay!")
+            console.log("Okay!");
         }
 
         //Check if project description is given
@@ -333,8 +334,16 @@ const modifyProject = async (req, res) => {
             });
         }
 
+        //Check if the project is avaialbe in the database to update
+        exists = await Project.findOne({projectName: selectedProject});
+        if(!exists){
+            return res.status(404).json({
+                error: "There is no such project in database!" 
+            })
+        }
+
         const project = await Project.findOneAndUpdate(
-            {projectName: "2"},
+            {projectName: selectedProject},
             req.body,
             {new: true}
         );
