@@ -27,6 +27,8 @@ app.use("/createNewTask", require("./routes/authRoutes"));
 app.use("/getProjects", require("./routes/authRoutes"));
 app.use("/getUsers", require("./routes/authRoutes"));
 app.use("/modifyTheProject/:currentProjectName", require("./routes/authRoutes"));
+app.use("/deleteTheProject/:projectToBeDeleted", require("./routes/authRoutes"));
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);

@@ -250,111 +250,90 @@ const getUsers = async (req, res) => {
 }
 
 const modifyProject = async (req, res) => {
+    const {projectModifier} = req.body;
+    const {project} = req.body;
+    
+    const {selectedProject} = req.params;
     try {
-        const {selectedProject} = req.params;
-        console.log(selectedProject);
-        const{
-            projectOwner,
-            projectName,
-            projectDescription,
-            departmentName,
-            startDate,
-            dueDate,
-            assignedTo,
-            projectState,
-            tasks,
-            comments
-        } = req.body;
-
-        //Check if project owner is given
-        if(!projectOwner){
-            return res.json({
-                error: "Project Owner is required!"
-            });
-        }
-
-        //Check if project name is given
-        if(!projectName){
-            return res.json({
-                error: "Project Name is required!"
-            });
-        }
-
-        //check if project name is unique
-        let exists = await Project.findOne({projectName: projectName});
-        if(selectedProject != projectName){
-            if(exists){
-                return res.json({
-                    error: "Project name is alredy taken, provide a diffrent name!"
-                });
-            }
-        }else{
-            console.log("Okay!");
-        }
-
-        //Check if project description is given
-        if(!projectDescription){
-            return res.json({
-                error: "Project description can't be empty!"
-            });
-        }
-
-        //Check if department name is given
-        if(!departmentName){
-            return res.json({
-                error: "Department name is required!"
-            });
-        }
-
-        //Check if startDate is given
-        if(!startDate){
-            return res.json({
-                error: "start date is required!"
-            });
-        }
-
-        //Check if dueDate is given
-        if(!dueDate){
-            return res.json({
-                error: "due date is required!"
-            });
-        }
-
-        //Check if users are assigned
-        if(!assignedTo){
-            return res.json({
-                error: "Users need to be assigned!"
-            });
-        }
-
-        //Check if the project sate is given 
-        if(!projectState){
-            return res.json({
-                error: "State is required!"
-            });
-        }
-
+        
+        let foundProject = await Project.findOne({projectName: selectedProject});
+        
         //Check if the project is avaialbe in the database to update
-        exists = await Project.findOne({projectName: selectedProject});
-        if(!exists){
+        if(!foundProject){
             return res.status(404).json({
                 error: "There is no such project in database!" 
             })
         }
+        
+        if(foundProject.projectOwner === projectModifier){
+            try {
+                //check if new project name is unique
+                if(project.hasOwnProperty("projectName")){
+                    let exists = await Project.findOne({projectName: project.projectName});
+                    console.log(project); 
+                    if(exists){
+                        return res.json({
+                            error: "Project name is alredy taken, provide a diffrent name!"
+                        });
+                    }else{
+                        console.log("Okay!");
+                    }
+                }
+                
+                const updatedProject = await Project.findOneAndUpdate(
+                    {projectName: selectedProject},
+                    project,
+                    {new: true}
+                );
 
-        const project = await Project.findOneAndUpdate(
-            {projectName: selectedProject},
-            req.body,
-            {new: true}
-        );
-
-        res.status(200).json({
-            project
-        });
-    } catch (err) {
+                return res.status(200).json({
+                    updatedProject
+                });
+            } catch (err) {
+                return res.status(500).json({error: "Unknown Error!"});
+            }
+        }else{
+            return res.json({
+                error: "You are not allowed to perform such action!"
+            });
+        }
+    } catch (error) {
         res.status(500).json({error: "Unknown Error!"});
     }
 }
+
+const deleteProject = async (req, res) => {
+    try {
+        //take the passed data
+        const {projectToBeDeleted} = req.params;
+        //Project owner doesn't mickup by req.body
+        // const {data} = req.body;
+        data = "2@gmail.com";
+
+        //fetch the project
+        let exist = await Project.findOne(
+            {projectName : projectToBeDeleted}
+        );
+ 
+        if(!exist){
+            return res.status(404).json("There is no such project!");
+        }
+        console.log(exist.projectOwner);
+        console.log(req.body);
+        // checking the deleter if they are the project owner or not
+        if(exist.projectOwner === data){
+            console.log("fff");
+            const deletedProject = await Project.deleteOne(
+                {projectName: projectToBeDeleted}
+            );
+            console.log(deletedProject);
+            return res.status(200).json({deletedProject});
+        }
+    } catch (error) {
+        return res.status(500).json({error: "Unknow Error!"});
+    }
+}
+
 
 module.exports = {
     test,
@@ -365,5 +344,6 @@ module.exports = {
     createNewTask,
     getProjects,
     getUsers,
-    modifyProject
+    modifyProject,
+    deleteProject
 }

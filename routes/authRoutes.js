@@ -10,7 +10,8 @@ const {
     createNewTask, 
     getProjects, 
     getUsers,
-    modifyProject } = require("../controllers/authController");
+    modifyProject,
+    deleteProject } = require("../controllers/authController");
 
 //middleware
 router.use(
@@ -29,5 +30,6 @@ router.put("/createNewTask", createNewTask);
 router.get("/getProjects", getProjects);
 router.get("/getUsers", getUsers);
 router.put("/modifyTheProject/:selectedProject", modifyProject);
+router.delete("/deleteTheProject/:projectToBeDeleted", deleteProject);
 
 module.exports = router;
