@@ -30,6 +30,6 @@ router.put("/createNewTask", createNewTask);
 router.get("/getProjects", getProjects);
 router.get("/getUsers", getUsers);
 router.put("/modifyTheProject/:selectedProject", modifyProject);
-router.delete("/deleteTheProject/:projectToBeDeleted", deleteProject);
+router.put("/deleteTheProject/:projectToBeDeleted", deleteProject);
 
 module.exports = router;

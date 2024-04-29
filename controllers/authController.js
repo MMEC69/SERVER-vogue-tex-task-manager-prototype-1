@@ -307,8 +307,8 @@ const deleteProject = async (req, res) => {
         //take the passed data
         const {projectToBeDeleted} = req.params;
         //Project owner doesn't mickup by req.body
-        // const {data} = req.body;
-        data = "2@gmail.com";
+        const {data} = req.body;
+        // data = "2@gmail.com";
 
         //fetch the project
         let exist = await Project.findOne(
@@ -328,6 +328,10 @@ const deleteProject = async (req, res) => {
             );
             console.log(deletedProject);
             return res.status(200).json({deletedProject});
+        }
+        else{
+            console.log("You are not authorized to perform this!");
+            return res.status(404).json({error: "You are not authorized to perform this!"});
         }
     } catch (error) {
         return res.status(500).json({error: "Unknow Error!"});
