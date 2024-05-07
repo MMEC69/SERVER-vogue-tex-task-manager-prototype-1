@@ -109,8 +109,12 @@ const createNewProject = async (req, res) => {
             projectState
         } = req.body;
 
+        const{
+            email
+        } = projectOwner
+
         //Check if project owner is given
-        if(!projectOwner){
+        if(!email){
             return res.json({
                 error: "Project Owner is required!"
             });
@@ -191,7 +195,9 @@ const createNewProject = async (req, res) => {
 
 const createNewTask = async (req, res) => {
     try {
-        const {currentProject, tasks} = req.body;
+        const {currentProject, tasks, user} = req.body;
+
+        const {email} = user;
         const {currentProjectOwner, currentProjectName} = currentProject
         const projectName = currentProjectName;
         const newTasks = tasks
@@ -204,7 +210,7 @@ const createNewTask = async (req, res) => {
                 error: "Such project doesn't exist!"
             })
         }
-        if(currentProjectOwner != project.projectOwner){
+        if(email != project.projectOwner.email){
             return res.json({
                 error: "You are not allowed to add tasks!"
             });
@@ -265,7 +271,7 @@ const modifyProject = async (req, res) => {
             })
         }
         
-        if(foundProject.projectOwner === projectModifier){
+        if(foundProject.projectOwner.email === projectModifier){
             try {
                 //check if new project name is unique
                 if(project.hasOwnProperty("projectName")){
@@ -304,13 +310,10 @@ const modifyProject = async (req, res) => {
 
 const deleteProject = async (req, res) => {
     try {
-        //take the passed data
         const {projectToBeDeleted} = req.params;
-        //Project owner doesn't mickup by req.body
-        const {data} = req.body;
-        // data = "2@gmail.com";
 
-        //fetch the project
+        const {data} = req.body;
+
         let exist = await Project.findOne(
             {projectName : projectToBeDeleted}
         );
@@ -318,10 +321,9 @@ const deleteProject = async (req, res) => {
         if(!exist){
             return res.status(404).json("There is no such project!");
         }
-        console.log(exist.projectOwner);
-        console.log(req.body);
+        
         // checking the deleter if they are the project owner or not
-        if(exist.projectOwner === data){
+        if(exist.projectOwner.email === data){
             console.log("fff");
             const deletedProject = await Project.deleteOne(
                 {projectName: projectToBeDeleted}
