@@ -2,11 +2,6 @@ const express = require("express");
 const router = express.Router();
 const cors = require("cors");
 
-const { 
-    registerUser, 
-    loginUser
-} = require("../controllers/authController");
-
 //middleware
 router.use(
     cors({
@@ -15,7 +10,10 @@ router.use(
     })
 );
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+const {
+    deleteProject
+} = require("../controllers/deleteController");
+
+router.put("/deleteTheProject/:projectToBeDeleted", deleteProject);
 
 module.exports = router;
