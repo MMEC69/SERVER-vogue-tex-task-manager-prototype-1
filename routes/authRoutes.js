@@ -11,7 +11,12 @@ const {
     getProjects, 
     getUsers,
     modifyProject,
-    deleteProject } = require("../controllers/authController");
+    deleteProject
+} = require("../controllers/authController");
+
+const {
+    addComment
+} = require("../controllers/ProjectModify");
 
 //middleware
 router.use(
@@ -31,5 +36,7 @@ router.get("/getProjects", getProjects);
 router.get("/getUsers", getUsers);
 router.put("/modifyTheProject/:selectedProject", modifyProject);
 router.put("/deleteTheProject/:projectToBeDeleted", deleteProject);
+router.put("/addComment/:projectName", addComment);
+
 
 module.exports = router;

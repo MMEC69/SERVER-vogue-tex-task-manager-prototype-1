@@ -28,6 +28,7 @@ app.use("/getProjects", require("./routes/authRoutes"));
 app.use("/getUsers", require("./routes/authRoutes"));
 app.use("/modifyTheProject/:currentProjectName", require("./routes/authRoutes"));
 app.use("/deleteTheProject/:projectToBeDeleted", require("./routes/authRoutes"));
+app.use("/addComment/:projectName", require("./routes/authRoutes"));
 
 
 app.listen(PORT, () => {
