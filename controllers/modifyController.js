@@ -55,9 +55,7 @@ const addComment = async (req, res) => {
 }
 
 const modifyProject = async (req, res) => {
-    const {projectModifier} = req.body;
-    const {project} = req.body;
-    
+    const {user, project} = req.body;    
     const {selectedProject} = req.params;
     try {
         
@@ -70,7 +68,7 @@ const modifyProject = async (req, res) => {
             })
         }
         
-        if(foundProject.projectOwner.email === projectModifier){
+        if(foundProject.projectOwner.email === user.email){
             try {
                 //check if new project name is unique
                 if(project.hasOwnProperty("projectName")){

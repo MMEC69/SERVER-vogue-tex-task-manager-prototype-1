@@ -27,10 +27,44 @@ const deleteProject = async (req, res) => {
             return res.status(404).json({error: "You are not authorized to perform this!"});
         }
     } catch (error) {
-        return res.status(500).json({error: "Unknow Error!"});
+        return res.status(500).json({error: "Unknown Error!"});
+    }
+}
+
+const deleteTask = async (req, res) => {
+    try {
+        const {projectName} = req.params;
+        const {
+            user,
+            newTaskName
+        } = req.body;
+
+        const exist = await Project.findOne(
+            {projectName : projectName}
+        );
+        if(!exist){
+            return res.status(404).json("There is no such project");
+        }
+        console.log(newTaskName);
+        if(exist.projectOwner.email === user.email){
+            const deletedTask = await Project.findOneAndUpdate(
+                {projectName: projectName},
+                {$pull: {
+                    tasks:{newTaskName: newTaskName} 
+                }}
+            );
+            console.log("Task Deleted!");
+            return res.status(200).json({deleteProject});
+        }else{
+            console.log("You are not authorized to perform this!");
+            return res.status(404).json({error: "You are  not authorized to perform this!"});
+        }
+    } catch (error) {
+        return res.status(500).json({error: "Unknown Error!"});
     }
 }
 
 module.exports = {
-    deleteProject
+    deleteProject,
+    deleteTask
 };

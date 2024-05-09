@@ -11,9 +11,11 @@ router.use(
 );
 
 const {
-    deleteProject
+    deleteProject,
+    deleteTask
 } = require("../controllers/deleteController");
 
 router.put("/deleteTheProject/:projectToBeDeleted", deleteProject);
+router.put("/deleteTheTask/:projectName", deleteTask);
 
 module.exports = router;
