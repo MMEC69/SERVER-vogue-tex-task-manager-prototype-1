@@ -12,10 +12,14 @@ router.use(
 
 const {
     modifyProject,
-    addComment
+    addComment,
+    modifyTaskState,
+    taskModify
 } = require("../controllers/modifyController");
 
 router.put("/modifyTheProject/:selectedProject", modifyProject);
 router.put("/addComment/:projectName", addComment);
+router.put("/modifyTheTaskState/:selectedProject", modifyTaskState);
+router.put("/modifyTask/:selectedProject", taskModify);
 
 module.exports = router;

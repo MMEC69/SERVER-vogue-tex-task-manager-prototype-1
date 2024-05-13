@@ -88,7 +88,6 @@ const modifyProject = async (req, res) => {
                     project,
                     {new: true}
                 );
-
                 return res.status(200).json({
                     updatedProject
                 });
@@ -105,7 +104,95 @@ const modifyProject = async (req, res) => {
     }
 }
 
+const modifyTaskState = async (req, res) =>{
+    const {selectedProject} = req.params;
+    const {user, task} = req.body;
+    try {
+        let foundProject = await Project.findOne({projectName: selectedProject});
+
+        if(!foundProject){
+            return res.status(404).json({
+                error: "There is no such project in database!"
+            });
+        }
+
+        if(foundProject.projectOwner.email === user.email){
+            try {
+                const updatedResult = await Project.updateOne(
+                    {projectName: selectedProject, "tasks.newTaskName": task.taskName},
+                    {$set: {
+                        "tasks.$.taskState":task.taskState 
+                    }}
+                );
+                console.log(updatedResult);
+                return res.status(200).json("Task state changed");
+            }
+            catch (error) {
+                return res.status(500).json({
+                    error: "Unknown Error!"
+                });
+            }
+        }
+    } catch (error) {
+        return res.status(500).json({
+            error: "Unknown Error!"
+        });
+    }
+}
+
+const taskModify = async (req, res) => {
+    const {selectedProject} = req.params;
+    const {
+        user,
+        taskModification
+    } = req.body
+
+    try {
+        let foundProject = await Project.findOne({projectName: selectedProject});
+        if(!foundProject){
+            return res.status(404).json({
+                error: "There is no such project in database!"
+            });
+        }
+        if(foundProject.projectOwner.email === user.email){
+            try {
+                if(taskModification.hasOwnProperty("newTaskName")){
+                    let exists = await Project.findOne(
+                        {
+                            projectName: selectedProject,
+                            "tasks.newTaskName" : taskModification.newTaskName
+                        }
+                    );
+                    if(exists){
+                        return res.status(404).json({
+                            error: "TaskName is alreaday taken, try again!"
+                        });
+                    }else{
+                        console.log("okay!");
+                    }
+                }
+                const updateTask = await Project.findOneAndUpdate(
+                    {projectName: selectedProject, "tasks.newTaskName": taskModification.newTaskName},
+                    {$set: {
+                        "tasks.$": taskModification
+                    }}
+                );
+                console.log(updateTask);
+                return res.status(200).json({error: "Task modified"});
+            } catch (error) {
+                return res.status(500).json({
+                    error: "Unknown Error!"
+                });
+            }
+        }
+    } catch (error) {
+        
+    }
+}
+
 module.exports = {
     addComment,
-    modifyProject
+    modifyProject,
+    modifyTaskState,
+    taskModify
 };
