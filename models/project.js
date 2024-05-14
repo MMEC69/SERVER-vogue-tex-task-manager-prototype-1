@@ -13,7 +13,16 @@ const projectSchema = new Schema({
     dueDate: String,
     assignedTo: Array,
     projectState: String,
-    tasks: Array,
+    tasks: [{
+        newTaskName:String,
+        newTaskDescription:String,
+        newTaskStartDate:String,
+        newTaskDueDate:String,
+        newTaskAssignedTo:Object,
+        assigner:Object,
+        assignedProject:String,
+        taskState:String
+    }],
     comments: Array
 });
 
