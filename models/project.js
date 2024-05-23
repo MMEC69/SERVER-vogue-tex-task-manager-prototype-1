@@ -13,6 +13,7 @@ const projectSchema = new Schema({
     dueDate: String,
     assignedTo: Array,
     projectState: String,
+    attachments:Array,
     tasks: [{
         newTaskName:String,
         newTaskDescription:String,
