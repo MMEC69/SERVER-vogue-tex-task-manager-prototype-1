@@ -106,6 +106,7 @@ const modifyProject = async (req, res) => {
 
 const modifyTaskState = async (req, res) =>{
     const {selectedProject} = req.params;
+    console.log(`Selected project ${selectedProject}`);
     const {user, task} = req.body;
     try {
         let foundProject = await Project.findOne({projectName: selectedProject});

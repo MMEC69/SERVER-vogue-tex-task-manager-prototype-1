@@ -3,7 +3,7 @@ const Project = require("../models/project");
 const deleteProject = async (req, res) => {
     try {
         const {projectToBeDeleted} = req.params;
-
+        console.log(`Project to be delted - ${projectToBeDeleted}.................`);
         const {data} = req.body;
 
         let exist = await Project.findOne(

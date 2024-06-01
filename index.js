@@ -38,6 +38,8 @@ app.use("/", require("./routes/deleteRoutes"));
 //fileUpload
 app.use("/",require("./routes/uploadFilesRoutes"));
 
+//fileDownload
+app.use("/",require("./routes/downloadFileRoutes"));
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
