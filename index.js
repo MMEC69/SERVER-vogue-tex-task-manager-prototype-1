@@ -3,6 +3,7 @@ const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const {nodemailer} = require("nodemailer");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,10 +37,13 @@ app.use("/", require("./routes/modifyRoutes"));
 app.use("/", require("./routes/deleteRoutes"));
 
 //fileUpload
-app.use("/",require("./routes/uploadFilesRoutes"));
+app.use("/", require("./routes/uploadFilesRoutes"));
 
 //fileDownload
-app.use("/",require("./routes/downloadFileRoutes"));
+app.use("/", require("./routes/downloadFileRoutes"));
+
+//mail
+app.use("/", require("./routes/sendMailRoutes"));
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
