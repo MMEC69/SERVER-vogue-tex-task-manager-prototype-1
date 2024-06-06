@@ -74,8 +74,8 @@ const loginUser = async (req, res) => {
                 error: "Passwords Don't Match!"
             });
         }
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
     }
 }
 
