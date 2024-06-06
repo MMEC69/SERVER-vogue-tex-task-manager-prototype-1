@@ -1,17 +1,18 @@
+const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const {nodemailer} = require("nodemailer");
-
 const app = express();
 const PORT = process.env.PORT || 3000;
+const {initialDeco, processDeco} = require(path.join(__dirname, "helpers", "textDecorations"));
 
 //database connection
 mongoose.connect(process.env.MONGO_URL)
-.then(() => console.log("Database Connected!"))
-.catch((err) => console.log("Database Not Connected : ", err));
+.then(() => console.log(`${initialDeco}Database Connected!${initialDeco}`))
+.catch((err) => console.log(`err: database Not Connected : ${err}`));
 
 // middleware
 app.use(express.json());
@@ -19,32 +20,32 @@ app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 
 // miscellaneous
-app.use("/", require("./routes/miscellaneousRoute"));
+app.use("/", require(path.join(__dirname, "routes", "miscellaneousRoute")));
 
 // auth
-app.use("/", require("./routes/authRoutes"));
+app.use("/", require(path.join(__dirname, "routes", "authRoutes")));
 
 // get
-app.use("/", require("./routes/getRoutes"));
+app.use("/", require(path.join(__dirname, "routes", "getRoutes")));
 
 // create
-app.use("/", require("./routes/createRoutes"));
+app.use("/", require(path.join(__dirname, "routes", "createRoutes")));
 
 //modify
-app.use("/", require("./routes/modifyRoutes"));
+app.use("/", require(path.join(__dirname, "routes", "modifyRoutes")));
 
 // delete
-app.use("/", require("./routes/deleteRoutes"));
+app.use("/", require(path.join(__dirname, "routes", "deleteRoutes")));
 
 //fileUpload
-app.use("/", require("./routes/uploadFilesRoutes"));
+app.use("/", require(path.join(__dirname, "routes", "uploadFilesRoutes")));
 
 //fileDownload
-app.use("/", require("./routes/downloadFileRoutes"));
+app.use("/", require(path.join(__dirname, "routes", "downloadFileRoutes")));
 
 //mail
-app.use("/", require("./routes/sendMailRoutes"));
+app.use("/", require(path.join(__dirname, "routes", "sendMailRoutes")));
 
 app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`);
+    console.log(`${initialDeco}Server is running on ${PORT}${initialDeco}`);
 });

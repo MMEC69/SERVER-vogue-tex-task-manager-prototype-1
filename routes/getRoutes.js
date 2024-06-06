@@ -1,7 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const cors = require("cors");
+const path = require("path");
 const originURL = process.env.originURL;
+const { 
+    getProfile,
+    getProjects,
+    getUsers
+} = require(path.join(__dirname, "..", "controllers", "getController"));
 
 //middleware
 router.use(
@@ -10,12 +16,6 @@ router.use(
         origin: originURL
     })
 );
-
-const { 
-    getProfile,
-    getProjects,
-    getUsers
-} = require("../controllers/getController");
 
 router.get("/user", getProfile);
 router.get("/projects", getProjects);

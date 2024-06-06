@@ -1,7 +1,8 @@
-const {CNPTemplateText} = require("../helpers/mailTemplates");
-const {initialDeco, processDeco} = require("../helpers/textDecorations");
-const {sendMail} = require("../helpers/sendMail");
-const {transporter} = require("../helpers/MailPara");
+const path = require("path");
+const {CNPTemplateText} = require(path.join(__dirname, "..", "helpers", "mailTemplates"));
+const {initialDeco, processDeco} = require(path.join(__dirname, "..", "helpers", "textDecorations"));
+const {sendMail} = require(path.join(__dirname, "..", "helpers", "sendMail"));
+const {transporter} = require(path.join(__dirname, "..", "helpers", "MailPara"));
 
 const CNPMail = async (req, res) => {
     console.log(`${initialDeco}CNPMail initalized${initialDeco}`);

@@ -1,4 +1,5 @@
-const {dateFormat1} = require("./conversion");
+const path = require("path");
+const {dateFormat1} = require(path.join(__dirname, "conversion"));
 
 const CNPTemplateText = (msgDetails, comrades) => {
     let today = new Date();

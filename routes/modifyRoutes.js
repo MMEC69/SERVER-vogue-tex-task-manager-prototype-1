@@ -1,7 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const cors = require("cors");
+const path = require("path");
 const originURL = process.env.originURL;
+const {
+    modifyProject,
+    addComment,
+    modifyTaskState,
+    taskModify
+} = require(path.join(__dirname, "..", "controllers", "modifyController"));
 
 //middleware
 router.use(
@@ -10,13 +17,6 @@ router.use(
         origin: originURL
     })
 );
-
-const {
-    modifyProject,
-    addComment,
-    modifyTaskState,
-    taskModify
-} = require("../controllers/modifyController");
 
 router.put("/modifyTheProject/:selectedProject", modifyProject);
 router.put("/addComment/:projectName", addComment);

@@ -1,8 +1,11 @@
-const User = require("../models/user");
-const { hashPassword, comparePassword } = require("../helpers/auth");
+const path = require("path");
+const User = require(path.join(__dirname, "..", "models", "user"));
+const { hashPassword, comparePassword } = require(path.join(__dirname, "..", "helpers", "auth"));
+const {initialDeco, processDeco} = require(path.join(__dirname, "..", "helpers", "textDecorations"));
 const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
+    console.log(`${initialDeco}Registration${initialDeco}`);
     try{
         const {fullName, email, password} = req.body;
         //Check if name is entered
@@ -12,9 +15,9 @@ const registerUser = async (req, res) => {
             });
         }
         //Check if password is good
-        if(!password || password.length < 13){
+        if(!password || password.length < 12){
             return res.json({
-                error: "Password is required and it must be atlease 12 characters in length"
+                error: "Password is required and it must be atleast 12 characters in length!"
             });
         }
         //Check email
@@ -33,10 +36,9 @@ const registerUser = async (req, res) => {
             email, 
             password: hashedPassword
         });
-
         return res.json(user);
-    }catch (error){
-        console.log(error); 
+    }catch (err){
+        console.log(err); 
     }
 }
 

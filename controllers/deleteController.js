@@ -1,4 +1,5 @@
-const Project = require("../models/project");
+const path = require("path");
+const Project = require(path.join(__dirname, "..", "models", "project"));
 
 const deleteProject = async (req, res) => {
     try {

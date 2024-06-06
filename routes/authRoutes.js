@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const cors = require("cors");
+const path = require("path");
 const originURL = process.env.originURL;
-
 const { 
     registerUser, 
     loginUser
-} = require("../controllers/authController");
+} = require(path.join(__dirname, "..", "controllers", "authController"));
 
 //middleware
 router.use(

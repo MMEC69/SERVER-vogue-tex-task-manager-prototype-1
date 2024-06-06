@@ -1,5 +1,6 @@
-const Project = require("../models/project");
-const User = require("../models/user");
+const path = require("path");
+const Project = require(path.join(__dirname, "..", "models", "project"));
+const User = require(path.join(__dirname, "..", "models", "user"));
 const jwt = require("jsonwebtoken");
 
 const getProfile = (req, res) => {

@@ -1,7 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const cors = require("cors");
+const path = require("path");
 const originURL = process.env.originURL;
+const {
+    deleteProject,
+    deleteTask
+} = require(path.join(__dirname, "..", "controllers", "deleteController"));
 
 //middleware
 router.use(
@@ -10,11 +15,6 @@ router.use(
         origin: originURL
     })
 );
-
-const {
-    deleteProject,
-    deleteTask
-} = require("../controllers/deleteController");
 
 router.put("/deleteTheProject/:projectToBeDeleted", deleteProject);
 router.put("/deleteTheTask/:projectName", deleteTask);

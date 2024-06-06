@@ -1,4 +1,4 @@
-const initialDeco = "###################"
+const initialDeco = " ################### "
  
 const processDeco = "....................."
 

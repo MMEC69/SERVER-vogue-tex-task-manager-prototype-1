@@ -3,7 +3,11 @@ const router = express.Router();
 const cors = require("cors");
 const fs = require("fs");
 const multer = require("multer");
+const path = require("path");
 const originURL = process.env.originURL;
+const {
+    uploadFiles
+} = require(path.join(__dirname, "..", "controllers", "uploadFilesController"));
 
 // fileUpload storage
 const storage = multer.diskStorage({
@@ -38,10 +42,6 @@ router.use(
         origin: originURL
     })
 );
-
-const {
-    uploadFiles
-} = require("../controllers/uploadFilesController");
 
 router.post("/uploadProjectAttachments", upload.array("files"), uploadFiles);
 
