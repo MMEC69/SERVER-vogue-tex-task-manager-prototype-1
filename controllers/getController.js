@@ -35,16 +35,24 @@ const getUsers = async (req, res) => {
     try {
         const users = await User.find();
         if(!users){
-            res.json({error: "There are no users"});
+            res.status(200).json({msg: "There are no users"});
         }
-        filteredUsers = users.map((user) => {
-            filteredUser = {fullName: user.fullName, email: user.email}
-            return filteredUser;
+        const usersInfo = users.map((userInfo) => {
+            arrangedUserInfo = {
+                _id: userInfo._id,
+                fullName: userInfo.fullName, 
+                email: userInfo.email
+            }
+            return arrangedUserInfo;
         });
 
-        return res.json(filteredUsers);
-    } catch (error) {
-        console.log("Error: " +error);
+        return res.status(200).json(usersInfo);
+    } catch (err) {
+        console.log(`err : ${err}`);
+        res.status(500).json({
+            err : "Server didn't respond",
+            errCode: err
+        });
     }
 }
 

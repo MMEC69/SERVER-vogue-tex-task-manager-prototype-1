@@ -3,9 +3,9 @@ const router = express.Router();
 const cors = require("cors");
 const fs = require("fs");
 const multer = require("multer");
+const originURL = process.env.originURL;
 
 // fileUpload storage
-
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
         console.log("File is been read........");
@@ -35,7 +35,7 @@ const upload = multer({storage: storage});
 router.use(
     cors({
         credentials: true,
-        origin: "http://localhost:3001"
+        origin: originURL
     })
 );
 

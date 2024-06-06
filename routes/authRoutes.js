@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const cors = require("cors");
+const originURL = process.env.originURL;
 
 const { 
     registerUser, 
@@ -11,7 +12,7 @@ const {
 router.use(
     cors({
         credentials: true,
-        origin: "http://localhost:3001"
+        origin: originURL
     })
 );
 
