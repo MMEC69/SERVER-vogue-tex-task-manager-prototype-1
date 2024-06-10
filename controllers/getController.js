@@ -11,7 +11,7 @@ const getProfile = (req, res) => {
             {}, 
             (err, user) => {
                 if (err) throw err;
-                res.json(user);
+                res.status(200).json(user);
             });
     }else{
         res.json(null);
