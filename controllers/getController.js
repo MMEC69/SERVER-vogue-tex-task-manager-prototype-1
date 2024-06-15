@@ -17,21 +17,27 @@ const getProfile = (req, res) => {
         res.json(null);
     }
 }
-
-
-
+// ===================================================
 const getProjects = async (req, res) => {
+    console.log("> getProjects initiated");
     try {
         const projectSet = await Project.find();
         if(!projectSet){
-            res.json({error: "There are no projects!"});
+            res.status(404).json({
+                error: "No projects"
+            });
         }
-        return res.json(projectSet);
+        console.log("> getProjects Ended");
+        return res.status(200).json(projectSet);
     } catch (error) {
-        console.log("Error: " +error);
+        console.log(error);
+        console.log("> getProjects Ended");
+        return res.status(404).json({
+            error: error
+        })
     }
 }
-
+// ==================================================
 const getUsers = async (req, res) => {
     try {
         const users = await User.find();
@@ -57,8 +63,31 @@ const getUsers = async (req, res) => {
     }
 }
 
+// ==================================================
+const getComments = async (req, res) => {
+    const {
+        id
+    } = req.params
+    console.log("> getComments initiated");
+    try {
+        const projectSet = await Project.find({_id: id});
+        const {
+            comments
+        } = projectSet[0];
+        console.log(comments);
+        console.log("> getComments Ended");
+        return res.status(200).json({ comments });
+    } catch (error) {
+        console.log(error);
+        console.log("> getComments Ended");
+        return res.status(404).json({
+            error: error
+        })
+    }
+}
 module.exports = {
     getProfile,
     getProjects,
-    getUsers
+    getUsers,
+    getComments
 };  

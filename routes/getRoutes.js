@@ -6,7 +6,8 @@ const originURL = process.env.originURL;
 const { 
     getProfile,
     getProjects,
-    getUsers
+    getUsers,
+    getComments
 } = require(path.join(__dirname, "..", "controllers", "getController"));
 
 //middleware
@@ -20,5 +21,6 @@ router.use(
 router.get("/user", getProfile);
 router.get("/projects", getProjects);
 router.get("/users", getUsers);
+router.get("/comments/:id", getComments);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const path = require("path");
 const Project = require(path.join(__dirname, "..", "models", "project"));
 
 const deleteProject = async (req, res) => {
+    console.log("> deleteProject initiated");
     try {
         const {projectToBeDeleted} = req.params;
         const {projectDeleter} = req.body;
@@ -10,6 +11,7 @@ const deleteProject = async (req, res) => {
             {_id : projectToBeDeleted}
         );
         if(!exist){
+            console.log("> deleteProject ended");
             return res.status(404).json("There is no such project");
         }
         
@@ -20,44 +22,47 @@ const deleteProject = async (req, res) => {
             return res.status(200).json({deletedProject});
         }
         else{
-            console.log("You are not authorized");
+            console.log("> deleteProject ended");
             return res.status(404).json({error: "You are not authorized"});
         }
     } catch (error) {
+        console.log("> deleteProject ended");
         return res.status(500).json({error: error});
     }
 }
 
 const deleteTask = async (req, res) => {
+    console.log("> deleteTask initiated");
     try {
         const {projectName} = req.params;
         const {
-            user,
-            newTaskName
+            id,
+            taskID
         } = req.body;
 
         const exist = await Project.findOne(
             {projectName : projectName}
         );
         if(!exist){
+            console.log("> deleteTask ended");
             return res.status(404).json("There is no such project");
         }
-        console.log(newTaskName);
-        if(exist.projectOwner.email === user.email){
+        if(exist.projectOwner === id){
             const deletedTask = await Project.findOneAndUpdate(
                 {projectName: projectName},
                 {$pull: {
-                    tasks:{newTaskName: newTaskName} 
+                    tasks:{_id: taskID} 
                 }}
             );
-            console.log("Task Deleted!");
+            console.log("> deleteTask ended");
             return res.status(200).json({deleteProject});
         }else{
-            console.log("You are not authorized to perform this!");
-            return res.status(404).json({error: "You are  not authorized to perform this!"});
+            console.log("> deleteTask ended");
+            return res.status(404).json({error: "You are not authorized"});
         }
     } catch (error) {
-        return res.status(500).json({error: "Unknown Error!"});
+        console.log("> deleteTask ended");
+        return res.status(500).json(error);
     }
 }
 

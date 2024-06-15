@@ -1,17 +1,20 @@
 const path = require("path");
 const Project = require(path.join(__dirname, "..", "models", "project"));
 
+// ==============================================================
 const addComment = async (req, res) => {
-    const {projectName} = req.params;
+    console.log("> addComment initiated");
+    const {
+        projectID
+    } = req.params;
     const{
         commentor,
         msg,
         commentedDateTime
     } = req.body;
     
-    //satisfy whenther user is authorized and project is available
     try {
-        const foundProject = await Project.findOne({projectName: projectName});
+        const foundProject = await Project.findOne({_id: projectID});
         
         if(!foundProject){
             return res.status(404).json({
@@ -19,16 +22,15 @@ const addComment = async (req, res) => {
             });
         }
 
-        //any assginedTo can comment
         const {
             assignedTo
         } = foundProject;
 
-        const assignedEmails = assignedTo.map((singleAssgined) => {
-            return singleAssgined.email;
+        const assignedIDs = assignedTo.map((singleAssgined) => {
+            return singleAssgined.id;
         });
 
-        if(assignedEmails.includes(commentor.email)){
+        if(assignedIDs.includes(commentor)){
             const userComment = {
                 commentor: commentor,
                 commentedDateTime: commentedDateTime,
@@ -36,30 +38,32 @@ const addComment = async (req, res) => {
             };
             try {
                 const submittedComment = await Project.findOneAndUpdate(
-                    {projectName: projectName},
+                    {_id: projectID},
                     {
                         $push: {
                             comments: userComment
                         }
                     }
                 );
+                console.log("> addComment ended");
                 return res.status(200).json({
                     submittedComment
                 });
             } catch (error) {
-                res.status(500).json({error: "Unknown Error!\nError: Data didn't pass to mongo"});
+                console.log("> addComment ended");
+                res.status(500).json({error: error});
             }
         }
     } catch (error) {
-        res.status(500).json({error: "Unknown Error!"});
+        console.log("> addComment ended");
+        res.status(500).json({error: error});
     }
 }
-
+// =========================================
 const modifyProject = async (req, res) => {
     const {id, project} = req.body;    
     const {selectedProject} = req.params;
     try {
-        
         let foundProject = await Project.findOne({_id: selectedProject});
         if(!foundProject){
             return res.status(404).json({
@@ -100,7 +104,36 @@ const modifyProject = async (req, res) => {
         res.status(500).json({error: error});
     }
 }
-
+// =================================================
+const modifyProjectByName = async (req, res) => {
+    const {id, project} = req.body;    
+    const {selectedProject} = req.params;
+    try {
+        let foundProject = await Project.findOne({projectName: selectedProject});
+        if(!foundProject){
+            return res.status(404).json({
+                error: "There is no such project" 
+            })
+        }
+        if(foundProject.projectOwner === id){
+            const updatedProject = await Project.findOneAndUpdate(
+                {projectName: selectedProject},
+                project,
+                {new: true}
+            );
+            return res.status(200).json({
+                updatedProject
+            });
+        }else{
+            return res.json({
+                error: "You are not authorized"
+            });
+        }
+    } catch (error) {
+        res.status(500).json({error: error});
+    }
+}
+// =================================================
 const modifyTaskState = async (req, res) =>{
     const {selectedProject} = req.params;
     console.log(`Selected project ${selectedProject}`);
@@ -264,5 +297,6 @@ module.exports = {
     addComment,
     modifyProject,
     modifyTaskState,
-    taskModify
+    taskModify,
+    modifyProjectByName
 };

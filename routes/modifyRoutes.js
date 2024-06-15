@@ -7,7 +7,8 @@ const {
     modifyProject,
     addComment,
     modifyTaskState,
-    taskModify
+    taskModify,
+    modifyProjectByName
 } = require(path.join(__dirname, "..", "controllers", "modifyController"));
 
 //middleware
@@ -19,8 +20,9 @@ router.use(
 );
 
 router.put("/modifyTheProject/:selectedProject", modifyProject);
-router.put("/addComment/:projectName", addComment);
+router.put("/addComment/:projectID", addComment);
 router.put("/modifyTheTaskState/:selectedProject", modifyTaskState);
 router.put("/modifyTask/:selectedProject", taskModify);
+router.put("/modifyProjectByName/:selectedProject", modifyProjectByName);
 
 module.exports = router;
