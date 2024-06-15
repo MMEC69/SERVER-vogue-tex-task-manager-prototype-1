@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const projectSchema = new Schema({
-    projectOwner: Object,
+    projectOwner: String,
     projectName: {
         type: String,
         unique: true

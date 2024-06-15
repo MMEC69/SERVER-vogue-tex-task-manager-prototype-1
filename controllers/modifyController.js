@@ -56,52 +56,48 @@ const addComment = async (req, res) => {
 }
 
 const modifyProject = async (req, res) => {
-    const {user, project} = req.body;    
+    const {id, project} = req.body;    
     const {selectedProject} = req.params;
     try {
         
-        let foundProject = await Project.findOne({projectName: selectedProject});
-        
-        //Check if the project is avaialbe in the database to update
+        let foundProject = await Project.findOne({_id: selectedProject});
         if(!foundProject){
             return res.status(404).json({
-                error: "There is no such project in database!" 
+                error: "There is no such project" 
             })
         }
-        
-        if(foundProject.projectOwner.email === user.email){
+        if(foundProject.projectOwner === id){
             try {
-                //check if new project name is unique
                 if(project.hasOwnProperty("projectName")){
                     let exists = await Project.findOne({projectName: project.projectName});
                     console.log(project); 
                     if(exists){
                         return res.json({
-                            error: "Project name is alredy taken, provide a diffrent name!"
+                            error: "Project name is not unique"
                         });
                     }else{
-                        console.log("Okay!");
+                        console.log("Okay");
                     }
                 }
                 
                 const updatedProject = await Project.findOneAndUpdate(
-                    {projectName: selectedProject},
+                    {_id: selectedProject},
                     project,
                     {new: true}
                 );
                 return res.status(200).json({
                     updatedProject
                 });
-            } catch (err) {
-                return res.status(500).json({error: "Unknown Error!"});
+            } catch (error) {
+                return res.status(500).json({error: error});
             }
         }else{
             return res.json({
-                error: "You are not allowed to perform such action!"
+                error: "You are not authorized"
             });
         }
     } catch (error) {
-        res.status(500).json({error: "Unknown Error!"});
+        res.status(500).json({error: error});
     }
 }
 

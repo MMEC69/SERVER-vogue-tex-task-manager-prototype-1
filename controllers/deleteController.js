@@ -4,31 +4,27 @@ const Project = require(path.join(__dirname, "..", "models", "project"));
 const deleteProject = async (req, res) => {
     try {
         const {projectToBeDeleted} = req.params;
-        console.log(`Project to be delted - ${projectToBeDeleted}.................`);
-        const {data} = req.body;
+        const {projectDeleter} = req.body;
 
         let exist = await Project.findOne(
-            {projectName : projectToBeDeleted}
+            {_id : projectToBeDeleted}
         );
- 
         if(!exist){
-            return res.status(404).json("There is no such project!");
+            return res.status(404).json("There is no such project");
         }
         
-        // checking the deleter if they are the project owner or not
-        if(exist.projectOwner.email === data){
+        if(exist.projectOwner === projectDeleter){
             const deletedProject = await Project.deleteOne(
-                {projectName: projectToBeDeleted}
+                {_id: projectToBeDeleted}
             );
-            console.log(deletedProject);
             return res.status(200).json({deletedProject});
         }
         else{
-            console.log("You are not authorized to perform this!");
-            return res.status(404).json({error: "You are not authorized to perform this!"});
+            console.log("You are not authorized");
+            return res.status(404).json({error: "You are not authorized"});
         }
     } catch (error) {
-        return res.status(500).json({error: "Unknown Error!"});
+        return res.status(500).json({error: error});
     }
 }
 

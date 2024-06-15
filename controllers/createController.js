@@ -14,68 +14,48 @@ const createNewProject = async (req, res) => {
             projectState
         } = req.body;
 
-        const{
-            email
-        } = projectOwner
-
-        //Check if project owner is given
-        if(!email){
+        if(!projectOwner){
             return res.json({
                 error: "Project Owner is required!"
             });
         }
-
-        //Check if project name is given
-        if(!projectName){
+        if(projectName){
+            const exists = await Project.findOne({projectName});
+            if(exists){
+                return res.json({
+                    error: "Project name is alredy taken, provide a diffrent name!"
+                });
+            }
+        }else{
             return res.json({
                 error: "Project Name is required!"
             });
         }
-
-        //check if project name is unique
-        const exists = await Project.findOne({projectName});
-        if(exists){
-            return res.json({
-                error: "Project name is alredy taken, provide a diffrent name!"
-            });
-        }
-
-        //Check if project description is given
         if(!projectDescription){
             return res.json({
                 error: "Project description can't be empty!"
             });
         }
-
-        //Check if department name is given
         if(!departmentName){
             return res.json({
                 error: "Department name is required!"
             });
         }
-
-        //Check if startDate is given
         if(!startDate){
             return res.json({
                 error: "start date is required!"
             });
         }
-
-        //Check if dueDate is given
         if(!dueDate){
             return res.json({
                 error: "due date is required!"
             });
         }
-
-        //Check if users are assigned
         if(!assignedTo){
             return res.json({
                 error: "Users need to be assigned!"
             });
         }
-
-        //Check if project state is given
         if(!projectState){
             return res.json({
                 error: "State is required!"
@@ -94,40 +74,39 @@ const createNewProject = async (req, res) => {
         });
         return res.json(project);
     } catch (error) {
-        console.log("Error: " +error);
+        console.log(error);
     }
 }
 
 const createNewTask = async (req, res) => {
     try {
-        const {currentProject, tasks, user} = req.body;
-
-        const {email} = user;
-        const {currentProjectOwner, currentProjectName} = currentProject
-        const projectName = currentProjectName;
-        const newTasks = tasks
-        
-        const project = await Project.findOne({projectName});
+        const {
+            id, 
+            currentProjectName, 
+            tasks
+        } = req.body;
+        const project = await Project.findOne({projectName: currentProjectName});
         if(!project){
-            console.log(currentProjectName)
-            // console.log(tasks)
             return res.json({
-                error: "Such project doesn't exist!"
-            })
-        }
-        if(email != project.projectOwner.email){
-            return res.json({
-                error: "You are not allowed to add tasks!"
+                error: "Such project doesn't exist"
             });
         }
-        console.log(project);
-
-        const addedTasks = await project.updateOne({$push: {tasks: {$each: tasks}}});
-        console.log(addedTasks);
-
-        return res.json(addedTasks);
+        if(!id){
+            return res.json({
+                error: "Project owner is missing"
+            });
+        }else{
+            if(id === project.projectOwner){
+                const addedTasks = await project.updateOne({$push: {tasks: {$each: tasks}}});
+                return res.json(addedTasks);
+            }else{
+                return res.json({
+                    error: "You are not allowed to add tasks"
+                });
+            }
+        }
     } catch (error) {
-        console.log("Error: " +error);
+        console.log(error);
     }
 }
 
