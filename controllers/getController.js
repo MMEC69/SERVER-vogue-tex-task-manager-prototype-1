@@ -4,17 +4,21 @@ const User = require(path.join(__dirname, "..", "models", "user"));
 const jwt = require("jsonwebtoken");
 
 const getProfile = (req, res) => {
+    console.log("> getProfile initiated");
     const {token} = req.cookies;
     if(token){
         jwt.verify(token, 
             process.env.JWT_SECRET, 
             {}, 
-            (err, user) => {
-                if (err) throw err;
+            (error, user) => {
+                console.log(error);
+                if (error) throw error;
+                console.log("> getProfile ended");
                 res.status(200).json(user);
             });
     }else{
-        res.json(null);
+        console.log("> getProfile ended");
+        res.status(404).json(null);
     }
 }
 // ===================================================
@@ -39,10 +43,12 @@ const getProjects = async (req, res) => {
 }
 // ==================================================
 const getUsers = async (req, res) => {
+    console.log("> getUsers initiated");
     try {
         const users = await User.find();
         if(!users){
-            res.status(200).json({msg: "There are no users"});
+            console.log("> getUsers ended");
+            return res.status(200).json({msg: "There are no users"});
         }
         const usersInfo = users.map((userInfo) => {
             arrangedUserInfo = {
@@ -52,13 +58,13 @@ const getUsers = async (req, res) => {
             }
             return arrangedUserInfo;
         });
-
+        console.log("> getUsers ended");
         return res.status(200).json(usersInfo);
-    } catch (err) {
-        console.log(`err : ${err}`);
-        res.status(500).json({
-            err : "Server didn't respond",
-            errCode: err
+    } catch (error) {
+        console.log(error);
+        console.log("> getUsers ended");
+        return res.status(500).json({
+            error : error
         });
     }
 }

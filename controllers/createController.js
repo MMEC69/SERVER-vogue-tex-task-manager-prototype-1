@@ -2,6 +2,7 @@ const path = require("path");
 const Project = require(path.join(__dirname, "..", "models", "project"));
 
 const createNewProject = async (req, res) => {
+    console.log("> createNewProject initiated");
     try {
         const {
             projectOwner,
@@ -15,53 +16,61 @@ const createNewProject = async (req, res) => {
         } = req.body;
 
         if(!projectOwner){
-            return res.json({
-                error: "Project Owner is required!"
+            console.log("> createNewProject ended");
+            return res.status(400).json({
+                error: "Project Owner is required"
             });
         }
         if(projectName){
             const exists = await Project.findOne({projectName});
             if(exists){
-                return res.json({
-                    error: "Project name is alredy taken, provide a diffrent name!"
+                console.log("> createNewProject ended");
+                return res.status(400).json({
+                    error: "Provide a unique project name"
                 });
             }
         }else{
-            return res.json({
-                error: "Project Name is required!"
+            console.log("> createNewProject ended");
+            return res.status(400).json({
+                error: "Project name is required"
             });
         }
         if(!projectDescription){
-            return res.json({
-                error: "Project description can't be empty!"
+            console.log("> createNewProject ended");
+            return res.status(400).json({
+                error: "Project description is required"
             });
         }
         if(!departmentName){
-            return res.json({
-                error: "Department name is required!"
+            console.log("> createNewProject ended");
+            return res.status(400).json({
+                error: "Department name is required"
             });
         }
         if(!startDate){
-            return res.json({
-                error: "start date is required!"
+            console.log("> createNewProject ended");
+            return res.status(400).json({
+                error: "start date is required"
             });
         }
         if(!dueDate){
-            return res.json({
-                error: "due date is required!"
+            console.log("> createNewProject ended");
+            return res.status(400).json({
+                error: "due date is required"
             });
         }
         if(!assignedTo){
-            return res.json({
-                error: "Users need to be assigned!"
+            console.log("> createNewProject ended");
+            return res.status(400).json({
+                error: "Users need to be assigned"
             });
         }
         if(!projectState){
-            return res.json({
-                error: "State is required!"
+            console.log("> createNewProject ended");
+            return res.status(400).json({
+                error: "State is required"
             });
         }
-
         const project = await Project.create({
             projectOwner,
             projectName,
@@ -72,13 +81,19 @@ const createNewProject = async (req, res) => {
             assignedTo, 
             projectState
         });
-        return res.json(project);
+        console.log("> createNewProject ended");
+        return res.status(200).json(project);
     } catch (error) {
         console.log(error);
+        console.log("> createNewProject ended");
+        return res.status(500).json({
+            error : error
+        });
     }
 }
 
 const createNewTask = async (req, res) => {
+    console.log("> createNewTask initiated");
     try {
         const {
             id, 
@@ -87,6 +102,7 @@ const createNewTask = async (req, res) => {
         } = req.body;
         const project = await Project.findOne({projectName: currentProjectName});
         if(!project){
+            console.log("> createNewTask ended");
             return res.json({
                 error: "Such project doesn't exist"
             });

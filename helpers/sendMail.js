@@ -1,15 +1,13 @@
-const path = require("path");
-const {initialDeco, processDeco} = require(path.join(__dirname, "textDecorations"));
-
 const sendMail = async (transporter, mailOptions) => {
-    console.log(`${initialDeco}Mail Sending!${initialDeco}`);
+    console.log("> sendMail initiated");
     try {
-        await transporter.sendMail(mailOptions);
-        const result = `Email has been sent!${processDeco}`
+        const result = await transporter.sendMail(mailOptions);
         console.log(result);
+        console.log("> sendMail ended");
         return result;
     } catch (error) {
         console.log(error);
+        console.log("> sendMail ended");
         return error;
     }
 }

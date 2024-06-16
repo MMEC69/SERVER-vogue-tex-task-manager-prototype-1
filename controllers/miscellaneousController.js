@@ -1,5 +1,7 @@
 const test = (req, res) => {
-    res.json("Test is working");
+    console.log("> test initiated");
+    console.log("> test ended");
+    res.status(200).json({msg : "Test is working"});
 }
 
 module.exports = {
