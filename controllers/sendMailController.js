@@ -21,7 +21,7 @@ const CNPMail = async (req, res) => {
             name : process.env.SENDING_ADDRESS_APP_NAME,
             address: process.env.SENDING_ADDRESS
         },
-        to : comrades,
+        to : receivers,
         subject: subject,
         text: msg,
         html: html

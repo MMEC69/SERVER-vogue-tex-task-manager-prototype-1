@@ -1,7 +1,7 @@
 const path = require("path");
 const {dateFormat1} = require(path.join(__dirname, "conversion"));
 
-const CNPTemplateText = (msgDetails, comrades) => {
+const CNPTemplateText = (msgDetails, receivers) => {
     let today = new Date();
     today = dateFormat1(today);
 
@@ -16,7 +16,7 @@ const CNPTemplateText = (msgDetails, comrades) => {
         assignedTo
     } = msgDetails;
 
-    comrades = comrades.toString();
+    receivers = receivers.toString();
 
     const msg = `
         Dear sir/madam,
@@ -28,7 +28,7 @@ const CNPTemplateText = (msgDetails, comrades) => {
         Project Owner/creator : ${projectOwner.projectName}
         Project Name : ${projectName}
         Project Description: ${projectDescription}
-        Who are assigned: ${comrades}
+        Who are assigned: ${receivers}
         Project Start Date: ${startDate}
         Project Due Date: ${dueDate}
         Project State: ${projectState}
@@ -38,7 +38,7 @@ const CNPTemplateText = (msgDetails, comrades) => {
     return msg
 }
 // ====================================================
-const CNPTemplateHTML = (msgDetails, comrades) => {
+const CNPTemplateHTML = (msgDetails, receivers) => {
     let today = new Date();
     today = dateFormat1(today);
 
@@ -53,7 +53,7 @@ const CNPTemplateHTML = (msgDetails, comrades) => {
         assignedTo
     } = msgDetails;
 
-    comrades = comrades.toString();
+    receivers = receivers.toString();
 
     const msg = `
         <html>
@@ -67,7 +67,7 @@ const CNPTemplateHTML = (msgDetails, comrades) => {
         Project Owner/creator : ${projectOwner.projectName}<br>
         Project Name : ${projectName}<br>
         Project Description: ${projectDescription}<br>
-        Who are assigned: ${comrades}<br>
+        Who are assigned: ${receivers}<br>
         Project Start Date: ${startDate}<br>
         Project Due Date: ${dueDate}<br>
         Project State: ${projectState}<br>
