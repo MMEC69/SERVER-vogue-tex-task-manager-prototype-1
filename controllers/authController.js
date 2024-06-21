@@ -1,7 +1,7 @@
 const path = require("path");
 const User = require(path.join(__dirname, "..", "models", "user"));
 const { hashPassword, comparePassword } = require(path.join(__dirname, "..", "helpers", "auth"));
-const {initialDeco, processDeco} = require(path.join(__dirname, "..", "helpers", "textDecorations"));
+const {initialDeco} = require(path.join(__dirname, "..", "helpers", "textDecorations"));
 const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {

@@ -21,8 +21,8 @@ router.use(
 
 router.put("/modifyTheProject/:selectedProject", modifyProject);
 router.put("/addComment/:projectID", addComment);
-router.put("/modifyTheTaskState/:selectedProject", modifyTaskState);
-router.put("/modifyTask/:selectedProject", taskModify);
+router.put("/modifyTheTaskState/:projectID", modifyTaskState);
+router.put("/modifyTask/:projectID", taskModify);
 router.put("/modifyProjectByName/:selectedProject", modifyProjectByName);
 
 module.exports = router;

@@ -151,49 +151,41 @@ const modifyProjectByName = async (req, res) => {
 // =================================================
 const modifyTaskState = async (req, res) =>{
     console.log("> modifyTaskState initiated");
-    const {selectedProject} = req.params;
+    const {projectID} = req.params;
     const {userID, task} = req.body;
     try {
-        let foundProject = await Project.findOne({_id: selectedProject});
-
+        let foundProject = await Project.findOne({_id: projectID});
         if(!foundProject){
             console.log("> modifyTaskState ended");
-            return res.status(404).json({
-                error: "There is no such project"
-            });
+            return res.status(404).json({error: "There is no such project"});
         }
 
         if(foundProject.projectOwner === userID){
             try {
                 const updatedResult = await Project.updateOne(
-                    {_id: selectedProject, "tasks._id": task.taskID},
-                    {$set: {
-                        "tasks.$.taskState":task.taskState 
-                    }}
+                    {_id: projectID, "tasks._id": task.taskID},
+                    {$set: {"tasks.$.taskState":task.taskState}}
                 );
+                console.log(updatedResult);
                 console.log("> modifyTaskState ended");
                 return res.status(200).json(updatedResult);
             }
             catch (error) {
                 console.log(error);
                 console.log("> modifyTaskState ended");
-                return res.status(500).json({
-                    error: "Unknown Error!"
-                });
+                return res.status(500).json({error: error});
             }
         }
     } catch (error) {
         console.log(error);
         console.log("> modifyTaskState ended");
-        return res.status(500).json({
-            error: "Unknown Error!"
-        });
+        return res.status(500).json({error: error});
     }
 }
 // =================================================
 const taskModify = async (req, res) => {
     console.log("> taskModify initiated");
-    const {selectedProject} = req.params;
+    const {projectID} = req.params;
     const {
         taskID,
         userID,
@@ -203,7 +195,7 @@ const taskModify = async (req, res) => {
     let foundProject, exists;
     let modifiedTask = {};
     try {
-        foundProject = await Project.findOne({_id: selectedProject});
+        foundProject = await Project.findOne({_id: projectID});
         if(!foundProject){
             console.log("> taskModify ended");
             return res.status(404).json({
@@ -214,9 +206,7 @@ const taskModify = async (req, res) => {
     catch (error) {
         console.log(error);
         console.log("> taskModify ended");
-        return res.status(500).json({
-            error: error
-        });
+        return res.status(500).json({error: error});
     }
     if(foundProject.projectOwner === userID){
         try {
@@ -229,7 +219,7 @@ const taskModify = async (req, res) => {
 
             if(taskModification.hasOwnProperty("newTaskName")){
                 exists = await Project.findOne({
-                    _id: selectedProject,
+                    _id: projectID,
                     "tasks.newTaskName" : taskModification.newTaskName
                 }
                 );
@@ -280,7 +270,7 @@ const taskModify = async (req, res) => {
                 modifiedTask.taskState = prevTask.taskState;
             }
             const updateTask = await Project.findOneAndUpdate(
-                {_id: selectedProject, "tasks._id": prevTask._id},
+                {_id: projectID, "tasks._id": prevTask._id},
                 {
                     $set: {
                         "tasks.$":modifiedTask

@@ -34,35 +34,33 @@ const deleteProject = async (req, res) => {
 const deleteTask = async (req, res) => {
     console.log("> deleteTask initiated");
     try {
-        const {projectName} = req.params;
+        const {projectID} = req.params;
         const {
             id,
             taskID
         } = req.body;
 
-        const exist = await Project.findOne(
-            {projectName : projectName}
-        );
+        const exist = await Project.findById(projectID);
         if(!exist){
             console.log("> deleteTask ended");
-            return res.status(404).json("There is no such project");
+            return res.status(404).json({error: "There is no such project"});
         }
         if(exist.projectOwner === id){
             const deletedTask = await Project.findOneAndUpdate(
-                {projectName: projectName},
+                {_id: projectID},
                 {$pull: {
                     tasks:{_id: taskID} 
                 }}
             );
             console.log("> deleteTask ended");
-            return res.status(200).json({deleteProject});
+            return res.status(200).json(deletedTask);
         }else{
             console.log("> deleteTask ended");
             return res.status(404).json({error: "You are not authorized"});
         }
     } catch (error) {
         console.log("> deleteTask ended");
-        return res.status(500).json(error);
+        return res.status(500).json({error: error});
     }
 }
 

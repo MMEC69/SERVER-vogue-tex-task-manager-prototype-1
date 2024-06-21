@@ -17,6 +17,6 @@ router.use(
 );
 
 router.put("/deleteTheProject/:projectToBeDeleted", deleteProject);
-router.put("/deleteTheTask/:projectName", deleteTask);
+router.put("/deleteTheTask/:projectID", deleteTask);
 
 module.exports = router;
