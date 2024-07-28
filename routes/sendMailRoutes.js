@@ -5,7 +5,8 @@ const cors = require("cors");
 const path = require("path");
 const originURL = process.env.originURL;
 const { 
-    CNPMail
+    CNPMail,
+    RPMail
 } = require(path.join(__dirname, "..", "controllers", "sendMailController"));
 
 //middleware
@@ -17,5 +18,6 @@ router.use(
 );
 
 router.post("/sendMailNewProject", CNPMail);
+router.post("/sendMailDeleteProject", RPMail);
 
 module.exports = router;

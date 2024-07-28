@@ -77,9 +77,53 @@ const CNPTemplateHTML = (msgDetails, receivers) => {
         </html>`;
     return msg
 }
+// ====================================================
+const RPTemplateText = (msgDetails, receivers) => {
+    let today = new Date();
+    today = dateFormat1(today);
+
+    const {
+        projectName,
+        projectDeleterEmail
+    } = msgDetails;
+
+    receivers = receivers.toString();
+
+    const msg = `
+        Dear sir/madam,
+        The project "${projectName}" has been deleted by ${projectDeleterEmail} on ${today}.
+        Thank You, Regards Vogue-Tex-Task-Management
+        `;
+    return msg
+}
+// ====================================================
+const RPTemplateHTML = (msgDetails, receivers) => {
+    let today = new Date();
+    today = dateFormat1(today);
+
+    const {
+        projectName,
+        projectDeleterEmail
+    } = msgDetails;
+
+    receivers = receivers.toString();
+
+    const msg = `
+        <html>
+        <body>
+        <b>Dear sir/madam,</b>
+        <p>The project "${projectName}" has been deleted by ${projectDeleterEmail} on ${today}.<br>
+        Thank You, Regards Vogue-Tex-Task-Management</p>
+        </body>
+        </html>`;
+    return msg
+}
+// ====================================================
 
 
 module.exports = {
     CNPTemplateText,
-    CNPTemplateHTML
+    CNPTemplateHTML,
+    RPTemplateText,
+    RPTemplateHTML
 }
