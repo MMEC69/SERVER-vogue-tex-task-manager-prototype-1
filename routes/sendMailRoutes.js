@@ -6,7 +6,9 @@ const path = require("path");
 const originURL = process.env.originURL;
 const { 
     CNPMail,
-    RPMail
+    RPMail,
+    MPMail,
+    CSMail
 } = require(path.join(__dirname, "..", "controllers", "sendMailController"));
 
 //middleware
@@ -19,5 +21,7 @@ router.use(
 
 router.post("/sendMailNewProject", CNPMail);
 router.post("/sendMailDeleteProject", RPMail);
+router.post("/sendMailModifyProject", MPMail);
+router.post("/sendMailChangeState", CSMail);
 
 module.exports = router;

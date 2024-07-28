@@ -119,11 +119,102 @@ const RPTemplateHTML = (msgDetails, receivers) => {
     return msg
 }
 // ====================================================
+const MPTemplateText = (msgDetails, receivers) => {
+    let today = new Date();
+    today = dateFormat1(today);
 
+    const {
+        projectName,
+        projectModifierEmail
+    } = msgDetails;
+
+    receivers = receivers.toString();
+
+    const msg = `
+        Dear sir/madam,
+        The project "${projectName}" has been modified by ${projectModifierEmail} on ${today}.
+        Thank You, Regards Vogue-Tex-Task-Management
+        `;
+    return msg
+}
+// ====================================================
+const MPTemplateHTML = (msgDetails, receivers) => {
+    let today = new Date();
+    today = dateFormat1(today);
+
+    const {
+        projectName,
+        projectModifierEmail
+    } = msgDetails;
+
+    receivers = receivers.toString();
+
+    const msg = `
+        <html>
+        <body>
+        <b>Dear sir/madam,</b>
+        <p>The project "${projectName}" has been deleted by ${projectModifierEmail} on ${today}.<br>
+        Thank You, Regards Vogue-Tex-Task-Management</p>
+        </body>
+        </html>`;
+    return msg
+}
+// ====================================================
+const CSTemplateText = (msgDetails, receivers) => {
+    let today = new Date();
+    today = dateFormat1(today);
+
+    const {
+        projectName,
+        projectStateChangerEmail,
+        prevState,
+        postState
+    } = msgDetails;
+
+    receivers = receivers.toString();
+
+    const msg = `
+        Dear sir/madam,
+        The project "${projectName}" state has been changed from 
+        ${prevState} to ${postState} by ${projectStateChangerEmail} on ${today}.
+        Thank You, Regards Vogue-Tex-Task-Management
+        `;
+    return msg
+}
+// ====================================================
+const CSTemplateHTML = (msgDetails, receivers) => {
+    let today = new Date();
+    today = dateFormat1(today);
+
+    const {
+        projectName,
+        projectStateChangerEmail,
+        prevState,
+        postState
+    } = msgDetails;
+
+    receivers = receivers.toString();
+
+    const msg = `
+        <html>
+        <body>
+        <b>Dear sir/madam,</b>
+        <p>The project "${projectName}" state has been changed from 
+        ${prevState} to ${postState} by ${projectStateChangerEmail} on ${today}.
+        Thank You, Regards Vogue-Tex-Task-Management</p>
+        </body>
+        </html>`;
+    return msg
+}
+// ====================================================
 
 module.exports = {
     CNPTemplateText,
     CNPTemplateHTML,
     RPTemplateText,
-    RPTemplateHTML
+    RPTemplateHTML,
+    MPTemplateText,
+    MPTemplateHTML,
+    CSTemplateText,
+    CSTemplateHTML
 }
