@@ -1,5 +1,6 @@
 const path = require("path");
 const Project = require(path.join(__dirname, "..", "models", "project"));
+const fs = require("fs");
 
 const deleteProject = async (req, res) => {
     console.log("> deleteProject initiated");
@@ -16,6 +17,12 @@ const deleteProject = async (req, res) => {
         }
         
         if(exist.projectOwner === projectDeleter){
+            const attachedDocs = exist.attachments;
+            attachedDocs?.map((attachedDoc) => {
+                fs.unlink(`${attachedDoc.destination}/${attachedDoc.filename}`,() => {
+                    console.log("> File Deleted");
+                });
+            });
             const deletedProject = await Project.deleteOne(
                 {_id: projectToBeDeleted}
             );
