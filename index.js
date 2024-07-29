@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const {nodemailer} = require("nodemailer");
+const schedule = require("node-schedule");
+const {projectReminder} = require(path.join(__dirname, "helpers", "alerts.js"));
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const {initialDeco, processDeco} = require(path.join(__dirname, "helpers", "textDecorations"));
@@ -18,6 +21,12 @@ mongoose.connect(process.env.MONGO_URL)
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
+
+//Alert Functions
+//time 00:01
+const alert1 = schedule.scheduleJob("* * * * *", () => {
+    projectReminder();
+}); 
 
 // miscellaneous
 app.use("/", require(path.join(__dirname, "routes", "miscellaneousRoute")));
