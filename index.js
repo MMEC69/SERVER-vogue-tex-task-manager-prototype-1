@@ -24,8 +24,10 @@ app.use(express.urlencoded({extended: false}));
 
 //Alert Functions
 //time 00:01
-const alert1 = schedule.scheduleJob("* * * * *", () => {
+const alert1 = schedule.scheduleJob("0 * * * *", () => {
+    console.log("> alert1 initiated");
     projectReminder();
+    console.log("> alert1 ended");
 }); 
 
 // miscellaneous

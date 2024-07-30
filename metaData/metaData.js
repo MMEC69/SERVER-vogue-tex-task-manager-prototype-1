@@ -8,6 +8,16 @@ const states = [
     {name: "dismissed"}
 ];
 
+const alertPeriod = {
+    oneMonth: 30,
+    twoWeeks: 14,
+    oneWeek: 7,
+    threeDays: 3,
+    oneDay: 1,
+    now: 0,
+}
+
 module.exports = {
-    states
+    states,
+    alertPeriod
 }

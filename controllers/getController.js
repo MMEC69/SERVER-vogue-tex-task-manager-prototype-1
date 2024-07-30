@@ -2,7 +2,7 @@ const path = require("path");
 const Project = require(path.join(__dirname, "..", "models", "project"));
 const User = require(path.join(__dirname, "..", "models", "user"));
 const jwt = require("jsonwebtoken");
-
+// ======================================================
 const getProfile = (req, res) => {
     console.log("> getProfile initiated");
     const {token} = req.cookies;

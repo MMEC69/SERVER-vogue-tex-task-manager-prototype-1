@@ -2,6 +2,7 @@ const path = require("path");
 const {dateFormat1} = require(path.join(__dirname, "conversion"));
 
 const CNPTemplateText = (msgDetails, receivers) => {
+    console.log("> CNPTemplateText initiated");
     let today = new Date();
     today = dateFormat1(today);
 
@@ -35,10 +36,12 @@ const CNPTemplateText = (msgDetails, receivers) => {
         Thank You, Regards Vogue-Tex-Task-Management
         Here with attached files,
         `;
+    console.log("> CNPTemplateText ended");
     return msg
 }
 // ====================================================
 const CNPTemplateHTML = (msgDetails, receivers) => {
+    console.log("> CNPTemplateHTML initiated");
     let today = new Date();
     today = dateFormat1(today);
 
@@ -75,10 +78,12 @@ const CNPTemplateHTML = (msgDetails, receivers) => {
         Here with attached files,</p>
         </body>
         </html>`;
+    console.log("> CNPTemplateHTML ended");
     return msg
 }
 // ====================================================
 const RPTemplateText = (msgDetails, receivers) => {
+    console.log("> RPTemplateText initiated");
     let today = new Date();
     today = dateFormat1(today);
 
@@ -94,10 +99,12 @@ const RPTemplateText = (msgDetails, receivers) => {
         The project "${projectName}" has been deleted by ${projectDeleterEmail} on ${today}.
         Thank You, Regards Vogue-Tex-Task-Management
         `;
+    console.log("> RPTemplateText ended");
     return msg
 }
 // ====================================================
 const RPTemplateHTML = (msgDetails, receivers) => {
+    console.log("> RPTemplateHTML initiated");
     let today = new Date();
     today = dateFormat1(today);
 
@@ -116,10 +123,12 @@ const RPTemplateHTML = (msgDetails, receivers) => {
         Thank You, Regards Vogue-Tex-Task-Management</p>
         </body>
         </html>`;
+    console.log("> RPTemplateHTML ended");
     return msg
 }
 // ====================================================
 const MPTemplateText = (msgDetails, receivers) => {
+    console.log("> MPTemplateText initiated");
     let today = new Date();
     today = dateFormat1(today);
 
@@ -135,10 +144,12 @@ const MPTemplateText = (msgDetails, receivers) => {
         The project "${projectName}" has been modified by ${projectModifierEmail} on ${today}.
         Thank You, Regards Vogue-Tex-Task-Management
         `;
+    console.log("> MPTemplateText ended");
     return msg
 }
 // ====================================================
 const MPTemplateHTML = (msgDetails, receivers) => {
+    console.log("> MPTemplateHTML initiated");
     let today = new Date();
     today = dateFormat1(today);
 
@@ -157,10 +168,12 @@ const MPTemplateHTML = (msgDetails, receivers) => {
         Thank You, Regards Vogue-Tex-Task-Management</p>
         </body>
         </html>`;
+    console.log("> MPTemplateHTML ended");
     return msg
 }
 // ====================================================
 const CSTemplateText = (msgDetails, receivers) => {
+    console.log("> CSTemplateText initiated");
     let today = new Date();
     today = dateFormat1(today);
 
@@ -179,10 +192,12 @@ const CSTemplateText = (msgDetails, receivers) => {
         ${prevState} to ${postState} by ${projectStateChangerEmail} on ${today}.
         Thank You, Regards Vogue-Tex-Task-Management
         `;
+    console.log("> CSTemplateText ended");
     return msg
 }
 // ====================================================
 const CSTemplateHTML = (msgDetails, receivers) => {
+    console.log("> CSTemplateHTML initiated");
     let today = new Date();
     today = dateFormat1(today);
 
@@ -204,6 +219,157 @@ const CSTemplateHTML = (msgDetails, receivers) => {
         Thank You, Regards Vogue-Tex-Task-Management</p>
         </body>
         </html>`;
+    console.log("> CSTemplateHTML ended");
+    return msg
+}
+// ====================================================
+const SMATemplateText = (msgDetails, alertType) => {
+    console.log("> SMATemplateText initiated");
+    let today = new Date();
+    let msg = "";
+    today = dateFormat1(today);
+
+    const {
+        projectName,
+        prevState,
+        postState,
+        remainingTime
+    } = msgDetails;
+
+    switch (alertType) {
+        case 0:
+            msg = `
+                Dear sir/madam,
+                The project "${projectName}" is due and it's state has been changed from 
+                ${prevState} to ${postState} on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                `;
+            break;
+        case 1:
+            msg = `
+                Dear sir/madam,
+                The project "${projectName}" have only ${remainingTime} remaining days in time on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                `;
+            break;
+        case 2:
+            msg = `
+                Dear sir/madam,
+                The project "${projectName}" have only ${remainingTime} remaining days in time on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                `;
+            break;
+        case 3:
+            msg = `
+                Dear sir/madam,
+                The project "${projectName}" have only ${remainingTime} remaining days in time on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                `;
+            break;
+        case 4:
+            msg = `
+                Dear sir/madam,
+                The project "${projectName}" have only ${remainingTime} remaining days in time on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                `;
+            break;
+        case 5:
+            msg = `
+                Dear sir/madam,
+                The project "${projectName}" have only ${remainingTime} remaining days in time on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                `;
+            break;
+        default:
+            break;
+    }
+    console.log("> SMATemplateText ended");
+    return msg;
+}
+// ====================================================
+const SMATemplateHTML = (msgDetails, alertType) => {
+    console.log("> SMATemplateHTML initiated");
+    let today = new Date();
+    let msg = "";
+    today = dateFormat1(today);
+    const {
+        projectName,
+        prevState,
+        postState,
+        remainingTime
+    } = msgDetails;
+
+    switch (alertType) {
+        case 0:
+            msg = `
+                <html>
+                <body>
+                <b>Dear sir/madam,</b>
+                <p>The project "${projectName}" is due and it's state has been changed from 
+                ${prevState} to ${postState} on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                </body>
+                </html>`;
+            break;
+        case 1:
+            msg = `
+                <html>
+                <body>
+                <b>Dear sir/madam,</b>
+                <p>The project "${projectName}" have only ${remainingTime} remaining days in time 
+                on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                </body>
+                </html>`;
+            break;
+        case 2:
+            msg = `
+                <html>
+                <body>
+                <b>Dear sir/madam,</b>
+                <p>The project "${projectName}" have only ${remainingTime} remaining days in time 
+                on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                </body>
+                </html>`;
+            break;
+        case 3:
+            msg = `
+                <html>
+                <body>
+                <b>Dear sir/madam,</b>
+                <p>The project "${projectName}" have only ${remainingTime} remaining days in time 
+                on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                </body>
+                </html>`;
+            break;
+        case 4:
+            msg = `
+                <html>
+                <body>
+                <b>Dear sir/madam,</b>
+                <p>The project "${projectName}" have only ${remainingTime} remaining days in time 
+                on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                </body>
+                </html>`;
+            break;
+        case 5:
+            msg = `
+                <html>
+                <body>
+                <b>Dear sir/madam,</b>
+                <p>The project "${projectName}" have only ${remainingTime} remaining days in time 
+                on ${today}.
+                Thank You, Regards Vogue-Tex-Task-Management</p>
+                </body>
+                </html>`;
+            break;
+        default:
+            break;
+    }
+    console.log("> SMATemplateHTML ended");
     return msg
 }
 // ====================================================
@@ -216,5 +382,7 @@ module.exports = {
     MPTemplateText,
     MPTemplateHTML,
     CSTemplateText,
-    CSTemplateHTML
+    CSTemplateHTML,
+    SMATemplateText,
+    SMATemplateHTML
 }
