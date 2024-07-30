@@ -49,10 +49,30 @@ const sendAlert = async (singleProject) => {
     const projectID = _id;
     switch (projectState) {
         case states[0].name:
+            // active state
             RespondPerDates(startDate, dueDate, assignedTo, projectName, projectState, projectID);
             break;
-        // case states[3].name:
-        //     RespondPerDates(startDate, dueDate, assignedTo, projectName, projectState, projectID);
+        case states[3].name:
+            // inactive state
+            RespondPerDates(startDate, dueDate, assignedTo, projectName, projectState, projectID);
+            break;
+        case states[1].name:
+            //due state - need seperate functions
+            RespondPerDates(startDate, dueDate, assignedTo, projectName, projectState, projectID);
+            break;
+        case states[2].name:
+            //complete
+            break;
+        case states[5].name:
+            //Hold state
+            RespondPerDates(startDate, dueDate, assignedTo, projectName, projectState, projectID);
+            break;
+        case states[6].name:
+            //dismissed
+            break;
+        case states[4].name:
+            //dismissed
+            break;
         default:
             break;
     }
@@ -68,18 +88,22 @@ const RespondPerDates = async (startDate, endDate, assignedTo, projectName, prev
 
     switch (DifferenceInDays) {
         case now:
-            postState = states[1].name;
-            changeProjectState(projectID, postState);
-            msgDetails = {
-                projectName: projectName,
-                prevState: prevState,
-                postState: postState,
-                remainingTime: DifferenceInDays
+            if (prevState === states[0].name) {
+                postState = states[1].name;
+                changeProjectState(projectID, postState);
+                msgDetails = {
+                    projectName: projectName,
+                    prevState: prevState,
+                    postState: postState,
+                    remainingTime: DifferenceInDays
+                }
+                alertType = 0;
+                receivers = await userEmailFilter(assignedTo);
+                sendMailAlerts(receivers, msgDetails, alertType);
+                break;
+            }else{
+                break;
             }
-            alertType = 0;
-            receivers = await userEmailFilter(assignedTo);
-            sendMailAlerts(receivers, msgDetails, alertType);
-            break;
         case oneDay:
             msgDetails = {
                 projectName: projectName,
