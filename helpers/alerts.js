@@ -79,8 +79,9 @@ const sendAlert = async (singleProject) => {
 }
 // ==================================================
 const RespondPerDates = async (startDate, endDate, assignedTo, projectName, prevState, projectID) => {
+    const today = new Date();
     console.log("> RespondPerDates initiated");
-    const DifferenceInDays = dayCounter(startDate, endDate);
+    const DifferenceInDays = dayCounter(today, endDate);
     let postState = "";
     let receivers = [];
     let msgDetails = {};
