@@ -57,6 +57,12 @@ app.use("/", require(path.join(__dirname, "routes", "downloadFileRoutes")));
 //mail
 app.use("/", require(path.join(__dirname, "routes", "sendMailRoutes")));
 
+//conversation
+app.use("/", require(path.join(__dirname, "routes", "conversationRoutes.js")));
+
+//message
+app.use("/", require(path.join(__dirname, "routes", "messageRoutes")));
+
 app.listen(PORT, () => {
     console.log(`${initialDeco}Server is running on ${PORT}${initialDeco}`);
 });
