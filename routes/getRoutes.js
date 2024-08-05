@@ -7,7 +7,8 @@ const {
     getProfile,
     getProjects,
     getUsers,
-    getComments
+    getComments,
+    getChatUsers
 } = require(path.join(__dirname, "..", "controllers", "getController"));
 
 //middleware
@@ -22,5 +23,6 @@ router.get("/user", getProfile);
 router.get("/projects", getProjects);
 router.get("/users", getUsers);
 router.get("/comments/:id", getComments);
+router.get("/chatUsers/:userId", getChatUsers);
 
 module.exports = router;

@@ -91,9 +91,26 @@ const getComments = async (req, res) => {
         })
     }
 }
+// ===================================================
+const getChatUsers = async(req, res) => {
+    console.log("> getChatUsers initiated");
+    const {userId} = req.params;
+    try {
+        const user = await User.findById(userId);
+        const {password, ...other} = user._doc
+        res.status(200).json(other);
+    } catch (error) {
+        console.log(error);
+        console.log("> getChatUsers ended");
+        res.status(500).json(error);
+    }
+    console.log("> getChatUsers ended");
+}
+// ===================================================
 module.exports = {
     getProfile,
     getProjects,
     getUsers,
-    getComments
+    getComments,
+    getChatUsers
 };  
