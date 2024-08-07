@@ -7,7 +7,8 @@ const originURL = process.env.originURL;
 
 const {
     postConversation,
-    getConversation
+    getConversation,
+    getConversationBy2Ids
 } = require(path.join(__dirname, "..", "controllers", "conversationController.js"));
 
 //middleware
@@ -20,5 +21,6 @@ router.use(
 
 router.post("/postConversation", postConversation);
 router.get("/getConversation/:userId", getConversation);
+router.get("/getConversation/:firstUserId/:secondUserId", getConversationBy2Ids);
 
 module.exports = router;

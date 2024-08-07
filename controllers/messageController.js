@@ -3,21 +3,21 @@ const Message = require(path.join(__dirname, "..", "models", "message.js"));
 
 // ===========================================================
 const postMessage = async(req, res) =>{
-    console.log("> postConversation initiated");
+    console.log("> postMessage initiated");
     const message = req.body;
     const newMesage = new Message(message);
     try {
         const savedMessage = await newMesage.save();
         res.status(200).json(savedMessage);
     } catch (error) {
-        console.log("> postConversation ended");
+        console.log("> postMessage ended");
         res.status(500).json(error);
     }
-    console.log("> postConversation ended");
+    console.log("> postMessage ended");
 }
 // ===========================================================
 const getMessage = async (req, res) => {
-    console.log("> getConversation initiated");
+    console.log("> getMessage initiated");
     const {
         conversationId
     } = req.params;
@@ -28,10 +28,10 @@ const getMessage = async (req, res) => {
         console.log(messages);
         res.status(200).json(messages);
     } catch (error) {
-        console.log("> getConversation ended");
+        console.log("> getMessage ended");
         res.status(500).json(error);
     }
-    console.log("> getConversation ended");
+    console.log("> getMessage ended");
 }
 // ===========================================================
 
