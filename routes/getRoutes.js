@@ -8,7 +8,8 @@ const {
     getProjects,
     getUsers,
     getComments,
-    getChatUsers
+    getChatUsers,
+    getProjectsByName
 } = require(path.join(__dirname, "..", "controllers", "getController"));
 
 //middleware
@@ -21,6 +22,7 @@ router.use(
 
 router.get("/user", getProfile);
 router.get("/projects", getProjects);
+router.get("/projects/:projectName/:userId", getProjectsByName);
 router.get("/users", getUsers);
 router.get("/comments/:id", getComments);
 router.get("/chatUsers/:userId", getChatUsers);

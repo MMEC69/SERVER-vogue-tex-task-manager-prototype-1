@@ -41,6 +41,34 @@ const getProjects = async (req, res) => {
         })
     }
 }
+// ===================================================
+const getProjectsByName = async (req, res) => {
+    const {
+        projectName,
+        userId
+    } = req.params;
+
+    console.log("> getProjectsByName initiated");
+    try {
+        const projectSet = await Project.find({
+            projectName: projectName,
+            projectOwner: userId
+        });
+        if(!projectSet){
+            res.status(404).json({
+                error: "No projects"
+            });
+        }
+        console.log("> getProjectsByName Ended");
+        return res.status(200).json(projectSet);
+    } catch (error) {
+        console.log(error);
+        console.log("> getProjectsByName Ended");
+        return res.status(404).json({
+            error: error
+        })
+    }
+}
 // ==================================================
 const getUsers = async (req, res) => {
     console.log("> getUsers initiated");
@@ -112,5 +140,6 @@ module.exports = {
     getProjects,
     getUsers,
     getComments,
-    getChatUsers
+    getChatUsers,
+    getProjectsByName
 };  
