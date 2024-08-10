@@ -5,7 +5,8 @@ const path = require("path");
 const originURL = process.env.originURL;
 const { 
     registerUser, 
-    loginUser
+    loginUser,
+    modifyUser
 } = require(path.join(__dirname, "..", "controllers", "authController"));
 
 //middleware
@@ -18,5 +19,6 @@ router.use(
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.post("/modify/user", modifyUser);
 
 module.exports = router;

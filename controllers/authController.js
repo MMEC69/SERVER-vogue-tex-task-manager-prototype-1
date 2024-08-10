@@ -3,7 +3,7 @@ const User = require(path.join(__dirname, "..", "models", "user"));
 const { hashPassword, comparePassword } = require(path.join(__dirname, "..", "helpers", "auth"));
 const {initialDeco} = require(path.join(__dirname, "..", "helpers", "textDecorations"));
 const jwt = require("jsonwebtoken");
-
+// ============================================================
 const registerUser = async (req, res) => {
     console.log(`${initialDeco}Registration${initialDeco}`);
     try{
@@ -41,8 +41,9 @@ const registerUser = async (req, res) => {
         console.log(err); 
     }
 }
-
+// ============================================================
 const loginUser = async (req, res) => {
+    console.log("> loginUser initiated");
     try {
         const {email, password} = req.body;
 
@@ -70,16 +71,60 @@ const loginUser = async (req, res) => {
             });
         }
         if(!match){
+            console.log("> loginUser ended");
             res.json({
                 error: "Passwords Don't Match!"
             });
         }
     } catch (err) {
         console.log(err);
+        console.log("> loginUser ended");
     }
 }
+// ============================================================
+const modifyUser = async(req, res) => {
+    console.log("> modifyUser initiated");
+    const {
+        userId: userId,
+        fullName: fullName,
+        email: email
+    } = req.body;
 
+    const UpdatedDetails = {
+        fullName: fullName,
+        email: email
+    }
+
+    try {
+        if(!fullName && !email){
+            res.status(400).json(
+                {error: "Fields are invalid"}
+            )
+        }
+        const exists = await User.findOne({email});
+        if(exists){
+            console.log("> modifyUser ended");
+            return res.json({
+                error: "Email is taken"
+            });
+        }
+        const updatedUser = await User.findOneAndUpdate(
+            {_id: userId},
+            UpdatedDetails,
+            {new: true}
+        );
+        return res.status(200).json({
+            message: "Changes made"
+        });
+        
+    } catch (error) {
+        console.log(error);
+        console.log("> modifyUser initiated"); 
+    }
+}
+// ============================================================
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    modifyUser
 }
