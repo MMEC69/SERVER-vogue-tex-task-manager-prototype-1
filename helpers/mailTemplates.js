@@ -37,7 +37,7 @@ const CNPTemplateText = (msgDetails, receivers) => {
         Here with attached files,
         `;
     console.log("> CNPTemplateText ended");
-    return msg
+    return msg;
 }
 // ====================================================
 const CNPTemplateHTML = (msgDetails, receivers) => {
@@ -79,7 +79,7 @@ const CNPTemplateHTML = (msgDetails, receivers) => {
         </body>
         </html>`;
     console.log("> CNPTemplateHTML ended");
-    return msg
+    return msg;
 }
 // ====================================================
 const RPTemplateText = (msgDetails, receivers) => {
@@ -100,7 +100,7 @@ const RPTemplateText = (msgDetails, receivers) => {
         Thank You, Regards Vogue-Tex-Task-Management
         `;
     console.log("> RPTemplateText ended");
-    return msg
+    return msg;
 }
 // ====================================================
 const RPTemplateHTML = (msgDetails, receivers) => {
@@ -124,7 +124,7 @@ const RPTemplateHTML = (msgDetails, receivers) => {
         </body>
         </html>`;
     console.log("> RPTemplateHTML ended");
-    return msg
+    return msg;
 }
 // ====================================================
 const MPTemplateText = (msgDetails, receivers) => {
@@ -145,7 +145,7 @@ const MPTemplateText = (msgDetails, receivers) => {
         Thank You, Regards Vogue-Tex-Task-Management
         `;
     console.log("> MPTemplateText ended");
-    return msg
+    return msg;
 }
 // ====================================================
 const MPTemplateHTML = (msgDetails, receivers) => {
@@ -169,7 +169,7 @@ const MPTemplateHTML = (msgDetails, receivers) => {
         </body>
         </html>`;
     console.log("> MPTemplateHTML ended");
-    return msg
+    return msg;
 }
 // ====================================================
 const CSTemplateText = (msgDetails, receivers) => {
@@ -193,7 +193,7 @@ const CSTemplateText = (msgDetails, receivers) => {
         Thank You, Regards Vogue-Tex-Task-Management
         `;
     console.log("> CSTemplateText ended");
-    return msg
+    return msg;
 }
 // ====================================================
 const CSTemplateHTML = (msgDetails, receivers) => {
@@ -370,7 +370,99 @@ const SMATemplateHTML = (msgDetails, alertType) => {
             break;
     }
     console.log("> SMATemplateHTML ended");
-    return msg
+    return msg;
+}
+// ====================================================
+const ticketMailTemplateText = (ticket) => {
+    console.log("> ticketMailTemplateText initiated");
+    let today = new Date();
+    today = dateFormat1(today);
+
+    const {
+        _id,
+        secretNumber,
+        ticketType
+    } = ticket;
+
+    const msg = `
+        Dear sir/madam,
+        A ticket for ${ticketType} has been placed on ${today}, the ticket id is ${_id}
+        and the secret number is ${secretNumber}.
+        Thank You, Regards Vogue-Tex-Task-Management
+        `;
+    console.log("> ticketMailTemplateText ended");
+    return msg;
+}
+// ====================================================
+const ticketMailTemplateHTML = (ticket) => {
+    console.log("> ticketMailTemplateHTML initiated");
+    let today = new Date();
+    today = dateFormat1(today);
+
+    const {
+        _id,
+        secretNumber,
+        ticketType
+    } = ticket;
+
+    const msg = `
+        <html>
+        <body>
+        <b>Dear sir/madam,</b>
+        <p>Dear sir/madam,
+        A ticket for ${ticketType} has been placed on ${today}, the ticket id is ${_id}
+        and the secret number is <b>${secretNumber}</b>.
+        Thank You, Regards Vogue-Tex-Task-Management
+        </body>
+        </html>`;
+    console.log("> ticketMailTemplateHTML ended");
+    return msg;
+}
+// ====================================================
+const updateTicketMailTemplateText = (ticket) => {
+    console.log("> updateTicketMailTemplateText initiated");
+    let today = new Date();
+    today = dateFormat1(today);
+
+    const {
+        _id,
+        secretNumber,
+        ticketType,
+        state
+    } = ticket;
+
+    const msg = `
+        Dear sir/madam,
+        A ticket for ${ticketType} has been placed completed.
+        Thank You, Regards Vogue-Tex-Task-Management
+        `;
+    console.log("> updateTicketMailTemplateText ended");
+    return msg;
+}
+// ====================================================
+const updateTicketMailTemplateHTML = (ticket) => {
+    console.log("> updateTicketMailTemplateHTML initiated");
+    let today = new Date();
+    today = dateFormat1(today);
+
+    const {
+        _id,
+        secretNumber,
+        ticketType,
+        state
+    } = ticket;
+
+    const msg = `
+        <html>
+        <body>
+        <b>Dear sir/madam,</b>
+        <p>Dear sir/madam,
+        A ticket for ${ticketType} has been placed completed.
+        Thank You, Regards Vogue-Tex-Task-Management
+        </body>
+        </html>`;
+    console.log("> ticketMailTemplateHTML ended");
+    return msg;
 }
 // ====================================================
 
@@ -384,5 +476,9 @@ module.exports = {
     CSTemplateText,
     CSTemplateHTML,
     SMATemplateText,
-    SMATemplateHTML
+    SMATemplateHTML,
+    ticketMailTemplateText,
+    ticketMailTemplateHTML,
+    updateTicketMailTemplateText,
+    updateTicketMailTemplateHTML
 }

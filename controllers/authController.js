@@ -3,6 +3,9 @@ const User = require(path.join(__dirname, "..", "models", "user"));
 const { hashPassword, comparePassword } = require(path.join(__dirname, "..", "helpers", "auth"));
 const {initialDeco} = require(path.join(__dirname, "..", "helpers", "textDecorations"));
 const jwt = require("jsonwebtoken");
+const { updateTicket } = require("../helpers/ticket");
+const Ticket = require(path.join(__dirname, "..", "models", "ticket"));
+
 // ============================================================
 const registerUser = async (req, res) => {
     console.log(`${initialDeco}Registration${initialDeco}`);
@@ -28,7 +31,7 @@ const registerUser = async (req, res) => {
             });
         }
 
-        const hashedPassword = await hashPassword(password)
+        const hashedPassword = await hashPassword(password);
         
         //create user in db
         const user = await User.create({
@@ -123,8 +126,43 @@ const modifyUser = async(req, res) => {
     }
 }
 // ============================================================
+const modifyPassword = async(req, res) => {
+    console.log("> modifyUser initiated");
+    const {
+        ticket,
+        user, 
+        newPassword
+    } = req.body;
+    try {
+        if(!newPassword || newPassword.length < 12){
+            return res.json({
+                error: "Password is required and it must be atleast 12 characters in length!"
+            });
+        }
+        const hashedPassword = await hashPassword(newPassword);
+        const updatedUser = await User.findOneAndUpdate(
+          {_id: user._id},
+          {password: hashedPassword}
+        );
+        const updatedTicket = await Ticket.findOneAndUpdate(
+            {_id: ticket._id},
+            {state: "completed"}
+        );
+        updateTicket(user, ticket);
+        return res.status(200).json({
+            updatedUser: updatedUser,
+            ticket: updatedTicket,
+            msg: "Password changed"
+        });
+    } catch (error) {
+        console.log(error);
+        console.log("> modifyUser ended");
+    }
+}
+// ============================================================
 module.exports = {
     registerUser,
     loginUser,
-    modifyUser
+    modifyUser,
+    modifyPassword
 }
